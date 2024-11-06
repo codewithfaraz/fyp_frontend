@@ -2,7 +2,7 @@ import React from "react";
 
 type FormProps = {
   children: React.ReactNode;
-  style: string;
+  style?: string;
   onSubmit: any;
 };
 
