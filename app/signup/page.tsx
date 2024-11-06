@@ -4,8 +4,8 @@ import Authwrapper from "@/components/shared/auth-layout/auth-wrapper";
 export default function SignupPage() {
   return (
     <Authwrapper
-      heading="Welcome Back!"
-      description="Pleae login to access a world of innovation and opportunities"
+      heading="Ready to Join!"
+      description="Join us today and turn your ideas into reality!"
     >
       <SignupForm />
     </Authwrapper>
