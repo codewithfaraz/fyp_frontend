@@ -4,7 +4,7 @@ import Logo from "@/assets/Images/logo.png";
 import Showcase from "@/assets/Images/showcase-image.png";
 type authTypes = {
   children: React.ReactNode;
-  heading: string;
+  heading: any;
   description: string;
 };
 export default function Authwrapper({
