@@ -1,11 +1,13 @@
-import React from "react";
-
-const SignupPage: React.FC = () => {
+"use client";
+import SignupForm from "./signup-form";
+import Authwrapper from "@/components/shared/auth-layout/auth-wrapper";
+export default function SignupPage() {
   return (
-    <div>
-      <h1>Signup Page</h1>
-    </div>
+    <Authwrapper
+      heading="Welcome Back!"
+      description="Pleae login to access a world of innovation and opportunities"
+    >
+      <SignupForm />
+    </Authwrapper>
   );
-};
-
-export default SignupPage;
+}
