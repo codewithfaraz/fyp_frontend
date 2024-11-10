@@ -17,5 +17,10 @@ export const signup = z
     message: errorMessages.confirmPasswordMessage,
     path: ["confirmPassword"],
   });
+  export const forget = z.object({
+    email: z.string().email({ message: errorMessages.emailMessage }),
+    pinCode:z.string().min(1,{message:errorMessages.pinCodeMessage}),
+  });
+export type Forget=z.infer<typeof forget>;
 export type Signin = z.infer<typeof signin>;
 export type Signup = z.infer<typeof signup>;

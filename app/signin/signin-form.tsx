@@ -42,7 +42,7 @@ export default function SigninForm() {
           {...register("rememverMe")}
           className="hidden md:block"
         />
-        <Link href="/" className="text-blue-500 text-sm underline">
+        <Link href="/forget-password" className="text-blue-500 text-sm underline">
           Forgot Password?
         </Link>
       </div>
