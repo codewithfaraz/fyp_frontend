@@ -1,5 +1,5 @@
 "use client";
-import { Button, Select, MultiSelect } from "rizzui";
+import { Button, Select, MultiSelect, Input } from "rizzui";
 import { useState, useRef } from "react";
 import Form from "@/components/shared/form/form";
 import TextEditor from "@/components/shared/text-editor";
@@ -9,54 +9,44 @@ const experienceOptions = [
   { label: "Web Development", value: "web_development" },
   { label: "Mobile Development", value: "mobile_development" },
 ];
-const skillsOptions = [
-  { label: "Javascript", value: "javascript" },
-  { label: "Reactjs", value: "reactjs" },
-  { label: "Nodejs", value: "nodejs" },
-  { label: "React Native", value: "react_native" },
-];
+
 const experienceLevelOptions = [
   { label: "1 to 2 years", value: "1_2_years" },
   { label: "3 to 5 years", value: "2_5_years" },
   { label: "5+ years", value: "5+_years" },
 ];
-export default function InnovatorFinishForm() {
+export default function InvestorFinishPage() {
   const [experience, setExperience] = useState([]);
-  const [skills, setSkills] = useState([]);
-  const [experienceLevel, setExperienceLevel] = useState(null);
+
+  const [experienceLevel, setExperienceLevel] = useState(
+    experienceLevelOptions[0]
+  );
   const [bg, setBg] = useState(null);
   const [content, setContent] = useState("");
   console.log(content);
-  const editor = useRef(null);
+
   function getImageUrl(url: any) {
     setBg(url);
   }
   return (
     <Form style="my-12 w-full">
+      <Input label="Enter your organization name" />
+      <Select
+        key={Math.random().toString()}
+        label="Experience Level"
+        options={experienceLevelOptions}
+        value={experienceLevel}
+        onChange={setExperienceLevel}
+        data-headlessui-state="open"
+      />
       <MultiSelect
         key={Math.random().toString()}
-        label="Your Experties"
+        label="Your Investing Experience"
         options={experienceOptions}
         value={experience}
         onChange={setExperience}
       />
-      <MultiSelect
-        key={Math.random().toString()}
-        label="Skills"
-        options={skillsOptions}
-        value={skills}
-        onChange={setSkills}
-      />
-      <div data-headlessui-state="open">
-        <Select
-          key={Math.random().toString()}
-          label="Experience Level"
-          options={experienceLevelOptions}
-          value={experienceLevel}
-          onChange={setExperienceLevel}
-          data-headlessui-state="open"
-        />
-      </div>
+
       <ImagePicker multiple={false} getImageUrl={getImageUrl}>
         <div
           className="w-[100px] h-[100px] border rounded-full flex justify-center flex-col items-center"

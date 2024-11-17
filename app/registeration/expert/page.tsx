@@ -4,6 +4,7 @@ import { UserProfile, ContactInformation } from "@/validators/zod-schemas";
 import { useState } from "react";
 import ContactInformationPage from "@/components/shared/userProfile/contact-information";
 import UserProfle from "@/components/shared/userProfile/user-profile";
+import ExpertFinishPage from "./expert-finish-page";
 let userProfiling = {};
 export default function ExpertRegisteration() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -27,6 +28,7 @@ export default function ExpertRegisteration() {
       {currentStep === 1 && (
         <ContactInformationPage submit={submit} goBack={goBackHandler} />
       )}
+      {currentStep === 2 && <ExpertFinishPage />}
     </div>
   );
 }

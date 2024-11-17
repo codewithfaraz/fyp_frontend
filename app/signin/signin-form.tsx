@@ -4,10 +4,15 @@ import { useForm } from "react-hook-form";
 import { PiArrowRightBold } from "react-icons/pi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useAuth } from "@/hooks/use-auth";
 import { Signin, signin } from "@/validators/zod-schemas";
 export default function SigninForm() {
-  function submit(data: Signin) {
+  const { handleLogin } = useAuth();
+  async function submit(data: Signin) {
     console.log(data);
+    const { email, password } = data;
+    const response = await handleLogin({ email, password });
+    console.log(response.status);
   }
   const {
     register,

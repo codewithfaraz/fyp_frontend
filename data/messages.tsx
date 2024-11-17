@@ -8,4 +8,8 @@ export const errorMessages = {
   phoneNumberErrorMessage: "Please enter a valid phone number",
   countryErrorMessage: "Please enter your country",
   cityErrorMessage: "Please enter your city",
+  expertiesMessage: "Please select your experties",
+  skillsMessage: "Please select your skills",
+  experienceLevelMessage: "Please select your experience level",
+  usernameMessage: "Please enter your username",
 };

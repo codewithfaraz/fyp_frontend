@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "rizzui";
@@ -7,11 +8,12 @@ type propsType = {
   children: React.ReactNode;
 };
 export default function Layout({ children }: propsType) {
+  const user = useSelector((state: any) => state.user.username);
   const path = usePathname();
   console.log(path);
   return (
-    <>
-      <div className="bg-green-900 p-2 md:p-4 max-w-xs md:max-w-xl mx-auto m-4 rounded-full flex justify-around space-x-3">
+    <div className="mt-24">
+      {/* <div className="bg-green-900 p-2 md:p-4 max-w-xs md:max-w-xl mx-auto m-4 rounded-full flex justify-around space-x-3">
         <Link
           href="/registeration/innovator"
           className={`md:py-2 text-center rounded-full flex-1 ${
@@ -57,8 +59,9 @@ export default function Layout({ children }: propsType) {
             Investor
           </Button>
         </Link>
-      </div>
+      </div> */}
+      <h1>Hi Welcome {user}</h1>
       {children}
-    </>
+    </div>
   );
 }

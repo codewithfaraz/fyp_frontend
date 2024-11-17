@@ -10,6 +10,7 @@ export const signin = z.object({
 export const signup = z
   .object({
     email: z.string().email({ message: errorMessages.emailMessage }),
+    username: z.string().nonempty({ message: errorMessages.usernameMessage }),
     password: z.string().min(8, { message: errorMessages.passwordMessage }),
     confirmPassword: z
       .string()
@@ -26,7 +27,7 @@ export const userProfile = z.object({
   dateOfBirth: z
     .string()
     .nonempty({ message: errorMessages.dateOfBirthMessage }),
-  gender: z.enum(["male", "female"], { message: errorMessages.genderMessage }),
+  // gender: z.enum(["Male", "Female"], { message: errorMessages.genderMessage }),
 });
 //schema for contact information
 export const contactInformation = z.object({
@@ -36,6 +37,13 @@ export const contactInformation = z.object({
   country: z.string().nonempty({ message: errorMessages.countryErrorMessage }),
   city: z.string().nonempty({ message: errorMessages.cityErrorMessage }),
   // city: z.string().nonempty({ message: errorMessages.phoneNumberMessage }),
+});
+export const innovatorFinishForm = z.object({
+  experties: z.string().nonempty({ message: errorMessages.expertiesMessage }),
+  skills: z.string().nonempty({ message: errorMessages.skillsMessage }),
+  experienceLevel: z
+    .string()
+    .nonempty({ message: errorMessages.experienceLevelMessage }),
 });
 //export type
 

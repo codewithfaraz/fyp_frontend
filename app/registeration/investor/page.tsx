@@ -4,10 +4,11 @@ import { UserProfile, ContactInformation } from "@/validators/zod-schemas";
 import { useState } from "react";
 import ContactInformationPage from "@/components/shared/userProfile/contact-information";
 import UserProfle from "@/components/shared/userProfile/user-profile";
+import InvestorFinishPage from "./investor-finish-page";
 
 let userProfiling = {};
 export default function InvestorRegiseration() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(2);
 
   function submit(data: UserProfile | ContactInformation) {
     userProfiling = { ...userProfiling, ...data };
@@ -29,6 +30,7 @@ export default function InvestorRegiseration() {
       {currentStep === 1 && (
         <ContactInformationPage submit={submit} goBack={goBackHandler} />
       )}
+      {currentStep === 2 && <InvestorFinishPage />}
     </div>
   );
 }

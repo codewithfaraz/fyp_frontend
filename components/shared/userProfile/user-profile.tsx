@@ -39,7 +39,7 @@ export default function UserProfle({
         label="Gender"
         value={currentGender}
         key={Math.random().toString()}
-        {...register("gender")}
+        // {...register("gender")}
         onChange={(option: any) => setCurrentGender(option)} // Ensure the onChange handler is correct
       />
 
