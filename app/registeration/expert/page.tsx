@@ -7,7 +7,7 @@ import UserProfle from "@/components/shared/userProfile/user-profile";
 import ExpertFinishPage from "./expert-finish-page";
 let userProfiling = {};
 export default function ExpertRegisteration() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(2);
   function submit(data: UserProfile | ContactInformation) {
     userProfiling = { ...userProfiling, ...data };
     console.log(userProfiling);

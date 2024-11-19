@@ -22,14 +22,20 @@ export default function SignupForm() {
   const [duplicateUsername, setDuplicateUsername] = useState(false);
   const [duplicateEmail, setDuplicateEmail] = useState(false);
   const [isLoading, setIsLodaing] = useState(false);
+  const [registerAs, setRegisterAs] = useState(options[0]);
+
   const dispatcher = useDispatch();
   const { handleSignup } = useAuth();
   const router = useRouter();
-  const [registerAs, setRegisterAs] = useState(options[0]);
   async function submit(data: Signup) {
     const { email, password, username } = data;
     setIsLodaing(true);
-    const response = await handleSignup({ email, password, username });
+    const response = await handleSignup({
+      email,
+      password,
+      username,
+      registerAs: registerAs.value,
+    });
 
     console.log(response.status);
     const responseStatus = response.status;

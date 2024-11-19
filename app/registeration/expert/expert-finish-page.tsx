@@ -1,6 +1,7 @@
 "use client";
-import { Button, Select, MultiSelect } from "rizzui";
+import { Button, Select, MultiSelect, Loader } from "rizzui";
 import { useState, useRef } from "react";
+import { useSelector } from "react-redux";
 import Form from "@/components/shared/form/form";
 import TextEditor from "@/components/shared/text-editor";
 import ImagePicker from "@/components/shared/image-picker";
@@ -17,10 +18,10 @@ const experienceLevelOptions = [
 ];
 export default function ExpertFinishPage() {
   const [experience, setExperience] = useState([]);
-
   const [experienceLevel, setExperienceLevel] = useState(
     experienceLevelOptions[0]
   );
+  const isLoading = useSelector((state: any) => state.profile.isImageUploaded);
   const [bg, setBg] = useState(null);
   const [content, setContent] = useState("");
   console.log(content);
@@ -55,7 +56,9 @@ export default function ExpertFinishPage() {
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-        ></div>
+        >
+          {isLoading ? <Loader /> : <p className="text-sm">Profile Image</p>}
+        </div>
       </ImagePicker>
       <TextEditor content={content} setContent={setContent} />
       <div dangerouslySetInnerHTML={{ __html: content }} />

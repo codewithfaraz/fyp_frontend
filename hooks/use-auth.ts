@@ -15,6 +15,7 @@ export const useAuth = () => {
     },
     []
   );
+  const setSession = (token: string) => AuthController.setSession(token);
   const handleSignup = useCallback(
     async (payload: { email: ""; password: ""; username: "" }) => {
       console.log(payload);
@@ -31,5 +32,6 @@ export const useAuth = () => {
   return {
     handleLogin,
     handleSignup,
+    setSession,
   };
 };

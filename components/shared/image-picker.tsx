@@ -1,5 +1,6 @@
 import { useRef } from "react";
-
+import { useDispatch } from "react-redux";
+import { profileActions } from "@/store/store";
 import { uploadFileToFirebase } from "@/lib/upload-image-to-firebase";
 export default function ImagePicker({
   multiple,
@@ -8,12 +9,15 @@ export default function ImagePicker({
 }: {
   multiple?: boolean;
   children?: any;
+
   getImageUrl: (url: any) => void;
 }) {
+  const dispatcher = useDispatch();
   const handleImage = async (e: any) => {
     try {
+      dispatcher(profileActions.toggleImageUpload());
       const fileUrl = await uploadFileToFirebase(e.target.files[0]);
-      console.log(fileUrl);
+      dispatcher(profileActions.toggleImageUpload());
       getImageUrl(fileUrl);
     } catch (error) {
       console.error("Failed to upload and retrieve image URL:", error);

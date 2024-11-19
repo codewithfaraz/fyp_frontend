@@ -1,7 +1,11 @@
 import { apiClient } from "./api.config";
 class AuthController {
-  static async getSession() {
+  static getSession() {
     return localStorage.getItem("loginToken");
+  }
+  static setSession(token: string) {
+    console.log(token);
+    localStorage.setItem("loginToken", token);
   }
   static userLogin(data: any): Promise<any> {
     return new Promise((resolve, reject) => {

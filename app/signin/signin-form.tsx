@@ -4,15 +4,28 @@ import { useForm } from "react-hook-form";
 import { PiArrowRightBold } from "react-icons/pi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import toast, { Toaster } from "react-hot-toast";
 import { useAuth } from "@/hooks/use-auth";
 import { Signin, signin } from "@/validators/zod-schemas";
+import GetAToast from "@/components/shared/get-a-toast";
+import { useRouter } from "next/navigation";
 export default function SigninForm() {
-  const { handleLogin } = useAuth();
+  //states
+  const { handleLogin, setSession } = useAuth();
+  const router = useRouter();
   async function submit(data: Signin) {
     console.log(data);
     const { email, password } = data;
     const response = await handleLogin({ email, password });
-    console.log(response.status);
+    console.log(response);
+    if (response.status != 200) {
+      toast.error("Invalid email or password");
+    } else if (response.status == 200) {
+      if (data.rememverMe) {
+        setSession(response.data.data.token);
+      }
+      router.push("/");
+    }
   }
   const {
     register,
@@ -23,6 +36,7 @@ export default function SigninForm() {
   });
   return (
     <Form style="" onSubmit={handleSubmit(submit)}>
+      <GetAToast />
       <Input
         label="Email"
         type="email"

@@ -10,6 +10,27 @@ type propsType = {
 export default function Layout({ children }: propsType) {
   const user = useSelector((state: any) => state.user.username);
   const path = usePathname();
+  function getRoleSpecificHeading() {
+    if (path === "/registeration/innovator") {
+      return (
+        <h1 className="text-green-900 text-center text-2xl my-12 font-bold">
+          Register Yourself and start Innovating
+        </h1>
+      );
+    } else if (path === "/registeration/expert") {
+      return (
+        <h1 className="text-green-900 text-center text-2xl my-12 font-bold">
+          Register yourself and start Investing
+        </h1>
+      );
+    } else {
+      return (
+        <h1 className="text-green-900 text-center text-2xl my-12 font-bold">
+          Register Yourself and start refining Ideas
+        </h1>
+      );
+    }
+  }
   console.log(path);
   return (
     <div className="mt-24">
@@ -60,7 +81,7 @@ export default function Layout({ children }: propsType) {
           </Button>
         </Link>
       </div> */}
-      <h1>Hi Welcome {user}</h1>
+      {getRoleSpecificHeading()}
       {children}
     </div>
   );

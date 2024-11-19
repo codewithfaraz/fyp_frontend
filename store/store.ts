@@ -9,10 +9,21 @@ const userSlice = createSlice({
     },
   },
 });
+const profileSlice = createSlice({
+  name: "profile",
+  initialState: { isImageUploaded: false },
+  reducers: {
+    toggleImageUpload(state) {
+      state.isImageUploaded = !state.isImageUploaded;
+    },
+  },
+});
 const store = configureStore({
   reducer: {
     user: userSlice.reducer,
+    profile: profileSlice.reducer,
   },
 });
 export default store;
 export const userActions = userSlice.actions;
+export const profileActions = profileSlice.actions;
