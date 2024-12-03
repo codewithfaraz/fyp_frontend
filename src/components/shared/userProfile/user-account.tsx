@@ -27,6 +27,7 @@ export default function UserAcount({ data }: { data: any }) {
           className="px-12"
           dangerouslySetInnerHTML={{ __html: data.profileContent }}
         />
+        <h1></h1>
       </div>
     </Card>
   );
