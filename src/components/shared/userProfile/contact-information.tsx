@@ -1,13 +1,11 @@
 import { Input, Button } from "rizzui";
 import Form from "../../../components/shared/form/form";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   ContactInformation,
   contactInformation,
-  UserProfile,
 } from "../../../../validators/zod-schemas";
 export default function ContactInformationPage({
   submit,

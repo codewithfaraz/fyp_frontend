@@ -1,9 +1,10 @@
 "use client";
-import { Button, Select, MultiSelect } from "rizzui";
-import { useState, useRef } from "react";
+import { Button, Select, MultiSelect, Loader } from "rizzui";
+import { useState } from "react";
 import Form from "../../../components/shared/form/form";
 import TextEditor from "../../../components/shared/text-editor";
 import ImagePicker from "../../../components/shared/image-picker";
+import { innovatorFinishPagedata } from "../../../../types/types";
 const experienceOptions = [
   { label: "Artificial Inteligence", value: "artificial_intelligence" },
   { label: "Web Development", value: "web_development" },
@@ -20,16 +21,39 @@ const experienceLevelOptions = [
   { label: "3 to 5 years", value: "2_5_years" },
   { label: "5+ years", value: "5+_years" },
 ];
-export default function InnovatorFinishForm() {
+export default function InnovatorFinishForm({
+  submit,
+  setIsSubmiting,
+}: {
+  setIsSubmiting?: any;
+  submit: (data: innovatorFinishPagedata) => void;
+}) {
   const [experience, setExperience] = useState([]);
+  const [showError, setShowError] = useState(false);
   const [skills, setSkills] = useState([]);
   const [experienceLevel, setExperienceLevel] = useState(null);
-  const [bg, setBg] = useState(null);
+  const [bg, setBg] = useState("");
   const [content, setContent] = useState("");
-  console.log(content);
-  const editor = useRef(null);
+  const [isUploading, setIsUploading] = useState(false);
   function getImageUrl(url: any) {
     setBg(url);
+  }
+  //handling form submit
+  function handleSubmit(e: any) {
+    e.preventDefault();
+    if (
+      experience.length <= 0 ||
+      skills.length <= 0 ||
+      experienceLevel === null ||
+      bg === null ||
+      bg.length <= 0 ||
+      content.length <= 0
+    ) {
+      setShowError(true);
+    } else {
+      const data = { experience, skills, experienceLevel, bg, content };
+      submit(data);
+    }
   }
   return (
     <Form style="my-12 w-full">
@@ -38,14 +62,22 @@ export default function InnovatorFinishForm() {
         label="Your Experties"
         options={experienceOptions}
         value={experience}
-        onChange={setExperience}
+        error={
+          showError &&
+          experience.length <= 0 &&
+          "Please select at least one option"
+        }
+        onChange={(value) => setExperience(value)}
       />
       <MultiSelect
         key={Math.random().toString()}
         label="Skills"
         options={skillsOptions}
         value={skills}
-        onChange={setSkills}
+        error={
+          showError && skills.length <= 0 && "Please select at least one option"
+        }
+        onChange={(value) => setSkills(value)}
       />
       <div data-headlessui-state="open">
         <Select
@@ -53,23 +85,45 @@ export default function InnovatorFinishForm() {
           label="Experience Level"
           options={experienceLevelOptions}
           value={experienceLevel}
-          onChange={setExperienceLevel}
+          error={
+            showError &&
+            experienceLevel == null &&
+            "Please select at least one option"
+          }
+          onChange={(value) => setExperienceLevel(value)}
           data-headlessui-state="open"
         />
       </div>
-      <ImagePicker multiple={false} getImageUrl={getImageUrl}>
+      <ImagePicker
+        multiple={false}
+        getImageUrl={getImageUrl}
+        onuploading={() => setIsUploading((prev) => !prev)}
+      >
         <div
-          className="w-[100px] h-[100px] border rounded-full flex justify-center flex-col items-center"
+          className={`w-[100px] h-[100px] border ${
+            showError && (bg === null || bg.length <= 0) && "border-red"
+          } rounded-full flex justify-center flex-col items-center`}
           style={{
             backgroundImage: `url(${bg})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-        ></div>
+        >
+          {isUploading && <Loader />}
+        </div>
       </ImagePicker>
+
       <TextEditor content={content} setContent={setContent} />
-      <div dangerouslySetInnerHTML={{ __html: content }} />
-      <Button type="submit" size="xl">
+      {/* <div dangerouslySetInnerHTML={{ __html: content }} /> */}
+      {content.length <= 0 && showError && (
+        <p className="text-red-500">Please enter some content</p>
+      )}
+      <Button
+        type="submit"
+        size="xl"
+        onClick={handleSubmit}
+        isLoading={setIsSubmiting}
+      >
         Finish
       </Button>
     </Form>

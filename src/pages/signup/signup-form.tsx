@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Form from "../../components/shared/form/form";
-import { Input, Password, Select, Button } from "rizzui";
+import { Input, Password, Button } from "rizzui";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -11,18 +11,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../../../hooks/use-auth";
 import AuthController from "../../../api/AuthController";
 import { Signup, signup } from "../../../validators/zod-schemas";
-const options = [
-  { label: "Explorer", value: "explorer" },
-  { label: "Expert", value: "expert" },
-  { label: "Innovator", value: "innovator" },
-  { label: "Investor", value: "investor" },
-];
+
 export default function SignupForm() {
   //states
   const [duplicateUsername, setDuplicateUsername] = useState(false);
   const [duplicateEmail, setDuplicateEmail] = useState(false);
   const [isLoading, setIsLodaing] = useState(false);
-  const [registerAs, setRegisterAs] = useState(options[0]);
 
   const dispatcher = useDispatch();
   const { handleSignup } = useAuth();
@@ -34,7 +28,6 @@ export default function SignupForm() {
       email,
       password,
       username,
-      registerAs: registerAs.value,
     });
     AuthController.setSession(response.data.token);
     if (response.status === 401) {
@@ -46,18 +39,8 @@ export default function SignupForm() {
       setDuplicateUsername(true);
       setIsLodaing(false);
     } else if (response.status === 201) {
-      setDuplicateEmail(false);
-      setDuplicateUsername(false);
-      dispatcher(userActions.setUser(data?.username));
-      if (registerAs.value === "innovator") {
-        navigate("/registeration/innovator");
-      } else if (registerAs.value === "expert") {
-        navigate("/registeration/expert");
-      } else if (registerAs.value === "explorer") {
-        navigate("/");
-      } else {
-        navigate("/registeration/investor");
-      }
+      dispatcher(userActions.setUser(response.data.user));
+      navigate("/home");
     }
   }
   const {
@@ -111,13 +94,7 @@ export default function SignupForm() {
           errorClassName="text-red-500"
         />
       </div>
-      <Select
-        options={options}
-        label="Register as"
-        key={Math.random().toString()}
-        value={registerAs}
-        onChange={setRegisterAs}
-      />
+
       <div className="space-y-3">
         <Button
           isLoading={isLoading}

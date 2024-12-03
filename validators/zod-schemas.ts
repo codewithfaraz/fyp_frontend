@@ -45,10 +45,17 @@ export const innovatorFinishForm = z.object({
     .string()
     .nonempty({ message: errorMessages.experienceLevelMessage }),
 });
+//schema for profile page of innovator
+export const innovatorFinishPage = z.object({
+  experience: z.array(z.string()).nonempty("Select at least one expertise."),
+  skills: z.array(z.string()).nonempty("Select at least one skill."),
+  experienceLevel: z.string().nonempty("Experience level is required."),
+});
 //export type
 
 //export types
 export type Signin = z.infer<typeof signin>;
 export type Signup = z.infer<typeof signup>;
+export type InnovatorFinishPage = z.infer<typeof innovatorFinishPage>;
 export type UserProfile = z.infer<typeof userProfile>;
 export type ContactInformation = z.infer<typeof contactInformation>;

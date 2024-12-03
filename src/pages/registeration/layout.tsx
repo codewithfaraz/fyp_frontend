@@ -1,14 +1,6 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Link, useLocation, Outlet } from "react-router-dom";
-import { Button } from "rizzui";
-
-type PropsType = {
-  children: React.ReactNode;
-};
+import { useLocation, Outlet } from "react-router-dom";
 
 export default function Layout() {
-  const user = useSelector((state: any) => state.user.username); // Redux selector
   const location = useLocation(); // React Router hook to get the current path
   const path = location.pathname;
 
