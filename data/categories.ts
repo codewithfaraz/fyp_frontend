@@ -10,6 +10,7 @@ import CategoryProducts from "../src/assets/Images/categories/category-products.
 import CategoryScience from "../src/assets/Images/categories/category-science.png";
 import CategorySocialImpact from "../src/assets/Images/categories/category-social-impact.png";
 import CategoryTransportation from "../src/assets/Images/categories/category-transportation.png";
+import { Label } from "@headlessui/react";
 
 export const categories = [
   {
@@ -156,4 +157,19 @@ export const categories = [
       "Augmented & Virtual Reality",
     ],
   },
+];
+export const mainCategories = [
+  { label: "Technology", value: "technology" },
+  { label: "Healthcare", value: "healthcare" },
+
+  { label: "Finance", value: "finance" },
+  { label: "Environment", value: "environment" },
+  { label: "Business", value: "business" },
+  { label: "Science", value: "science" },
+  { label: "Creative Arts", value: "creative-arts" },
+  { label: "Education", value: "education" },
+  { label: "Social Impact", value: "social-impact" },
+  { label: "Industrial", value: "industrial" },
+  { label: "Products", value: "products" },
+  { label: "Transportation", value: "transportation" },
 ];

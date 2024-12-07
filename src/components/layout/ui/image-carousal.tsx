@@ -3,10 +3,14 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 export default function ImageCarousal({
   children,
+  settings,
+  styles,
 }: {
+  styles?: string;
+  settings?: any;
   children: React.ReactNode;
 }) {
-  const settings = {
+  const Defaultsettings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -18,7 +22,7 @@ export default function ImageCarousal({
     autoplay: false,
   };
   return (
-    <Slider {...settings} className="mt-12">
+    <Slider {...Defaultsettings} {...settings} className={`mt-12${styles}`}>
       {children}
     </Slider>
   );

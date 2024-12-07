@@ -1,13 +1,9 @@
 import { apiClient } from "./api.config";
-class InvestorController {
-  static addInvestor(data: any): Promise<any> {
+class UserControllers {
+  static getUserRoles(data: any): Promise<any> {
     return new Promise((resolve, reject) => {
       apiClient
-        .post("/investor/add-investor", data, {
-          validateStatus: (status) => {
-            return true;
-          },
-        })
+        .get("/user/user-role", { params: data })
         .then((res) => {
           if (res.status === 200) {
             resolve(res);
@@ -20,10 +16,10 @@ class InvestorController {
         });
     });
   }
-  static getInvestor(data: any): Promise<any> {
+  static getUser(data: any): Promise<any> {
     return new Promise((resolve, reject) => {
       apiClient
-        .get("/investor/get-investor", { params: data })
+        .get("/user/get-user", { params: data })
         .then((res) => {
           if (res.status === 200) {
             resolve(res);
@@ -37,4 +33,4 @@ class InvestorController {
     });
   }
 }
-export default InvestorController;
+export default UserControllers;

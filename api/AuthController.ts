@@ -61,5 +61,22 @@ class AuthController {
         });
     });
   }
+  static updatePassword(data: any): Promise<any> {
+    console.log(data);
+    return new Promise((resolve, reject) => {
+      apiClient
+        .patch("/user/reset-password", data)
+        .then((res) => {
+          if (res.status === 200) {
+            resolve(res);
+          } else {
+            reject(res);
+          }
+        })
+        .catch(({ response }) => {
+          reject(response);
+        });
+    });
+  }
 }
 export default AuthController;

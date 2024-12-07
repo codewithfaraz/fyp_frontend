@@ -1,28 +1,47 @@
 import Logo from "../../../assets/Images/logo.png";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { Button, Dropdown, Avatar } from "rizzui";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import Footer from "../footer";
 export default function MainHeader() {
   const user = useSelector((state: any) => state.user.user);
-  const locaton = useLocation();
+  const location = useLocation();
   return (
     <>
       <div className="md:max-w-full border-b">
-        <div className="max-w-xl mx-auto md:max-w-[1400px] flex justify-between items-center">
+        <div className="max-w-xl mx-auto md:max-w-[1400px] flex justify-between items-center px-12">
           <Link to="/">
             <img src={Logo} alt="innovate logo" />
           </Link>
           <div className="md:space-x-12 space-x-0">
             <Link
-              to="/categories"
+              to="/innovators"
               className={`hover:text-green-900 ${
-                location.pathname === "/categories" &&
+                location.pathname === "/innovators" &&
                 "text-green-900 border-b border-green-900"
               }`}
             >
-              Categories
+              Innovators
+            </Link>
+            <Link
+              to="/investors"
+              className={`hover:text-green-900 ${
+                location.pathname === "/investors" &&
+                "text-green-900 border-b border-green-900"
+              }`}
+            >
+              Investors
+            </Link>
+            <Link
+              to="/experts"
+              className={`hover:text-green-900 ${
+                location.pathname === "/experts" &&
+                "text-green-900 border-b border-green-900"
+              }`}
+            >
+              Experts
             </Link>
             <Link
               to="/privacy-policy"
@@ -43,8 +62,9 @@ export default function MainHeader() {
           </div>
         </div>
       </div>
+
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

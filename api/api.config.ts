@@ -9,7 +9,6 @@ export const apiClient = axios.create({
     return true;
   },
 });
-
 apiClient.interceptors.request.use(
   async (config) => {
     try {

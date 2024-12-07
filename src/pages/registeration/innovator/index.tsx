@@ -38,7 +38,7 @@ export default function InnovatorRegiseration() {
       setIsSubmiting(false);
       console.log(response);
       if (response.status === 200) {
-        navigate("/profile/innovator");
+        navigate("/innovator");
       } else {
         toast.error(response.data.data.message);
       }

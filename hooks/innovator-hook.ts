@@ -14,7 +14,19 @@ export const useInnovator = () => {
     },
     []
   );
+  const getInnovator = async (username: string) => {
+    try {
+      const response = await InnovatorController.getInnovator({
+        username: username,
+      });
+      return response;
+    } catch (err) {
+      console.log(err, "@handle");
+      return err;
+    }
+  };
   return {
     addInnovatorHandler,
+    getInnovator,
   };
 };

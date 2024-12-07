@@ -2,8 +2,15 @@ import { Button } from "rizzui";
 import HeaderFrame from "../../../assets/Images/header-frame.png";
 import UnderlineShape from "../../shape/underline";
 import Card from "../../layout/ui/card";
+import { Link } from "react-router-dom";
 import HeadingPrimary from "../../layout/ui/heading-primary";
-export default function Hero({ buttonTitle }: { buttonTitle: string }) {
+export default function Hero({
+  buttonTitle,
+  link,
+}: {
+  buttonTitle: string;
+  link: string;
+}) {
   return (
     <Card styles="flex flex-col justify-center items-center space-y-24 md:mt-2 md:space-y-0">
       <div className="flex justify-between items-center">
@@ -24,9 +31,11 @@ export default function Hero({ buttonTitle }: { buttonTitle: string }) {
           <img src={HeaderFrame} className="max-w-[700px]" />
         </div>
       </div>
-      <Button className="" rounded="none" variant="outline" size="lg">
-        {buttonTitle}
-      </Button>
+      <Link to={link}>
+        <Button className="" rounded="none" variant="outline" size="lg">
+          {buttonTitle}
+        </Button>
+      </Link>
     </Card>
   );
 }

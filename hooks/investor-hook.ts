@@ -14,7 +14,19 @@ export const useInvestor = () => {
     },
     []
   );
+  const getInvestor = async (username: string) => {
+    try {
+      const response = await InvestorController.getInvestor({
+        username: username,
+      });
+      return response;
+    } catch (err) {
+      console.log(err, "@handle");
+      return err;
+    }
+  };
   return {
     addInvestorHandler,
+    getInvestor,
   };
 };

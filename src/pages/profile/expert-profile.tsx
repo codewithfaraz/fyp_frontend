@@ -1,30 +1,37 @@
 import { Tab } from "rizzui";
+import { useEffect, useState } from "react";
+import { useExpert } from "../../../hooks/expert-hook";
 import UserAcount from "../../components/shared/userProfile/user-account";
 import Card from "../../components/layout/ui/card";
-export default function ExpertProfile() {
-  const user = {
-    imageUrl:
-      "https://firebasestorage.googleapis.com/v0/b/webprojectimages-4ad07.appspot.com/o/fyp%20profile%20images%2F5780ecfd-dc03-436b-bb7c-f9ccb47709ff?alt=media&token=1e7a7ace-bcb3-4c9e-b476-8015c935faf3",
-    username: "faraz",
-    email: "farazmaqsood",
-    firstName: "Faraz",
-    lastName: "Maqsood",
-    profileContent:
-      "<p><strong>About Me</strong></p><p>Im a software engineer, always looking</p><p>for new things to learn and then add them into my user progfile.</p><ul style='list-style-type: circle';><li>React</li></ul><ol><li>React Native</li></ol><ul style='list-style-type: circle';><li>Python</li><li>Talwindcss</li><li>Node</li></ul><p>cvzx</p><ol><li>xzc</li><li>czx</li><br></ol><br>",
-    roles: [],
-  };
+
+export default function ExpertProfile({ user }: { user: any }) {
+  const { getExpert } = useExpert();
+  const [expertData, setExpertData] = useState({});
+
+  useEffect(() => {
+    async function fetchData() {
+      console.log(user.username);
+      const response = await getExpert(user.username);
+      console.log(response.data.data);
+      setExpertData(response.data.data.expert);
+    }
+    fetchData();
+  }, []);
+  console.log(expertData);
   return (
-    <Card styles="">
-      <Tab vertical className="">
+    <Card styles="w-full ">
+      <Tab vertical className="w-full">
         <Tab.List>
           <Tab.ListItem>Your Profile</Tab.ListItem>
-          <Tab.ListItem>Settings</Tab.ListItem>
+          <Tab.ListItem>Ideas Working On</Tab.ListItem>
+          <Tab.ListItem>Account Settings</Tab.ListItem>
         </Tab.List>
-        <Tab.Panels>
+        <Tab.Panels className="w-full">
           <Tab.Panel>
-            <UserAcount data={user} />
+            <UserAcount data={expertData} userType="expert" />
           </Tab.Panel>
-          <Tab.Panel>Setting</Tab.Panel>
+          <Tab.Panel>Idea Table</Tab.Panel>
+          <Tab.Panel>Account Settings</Tab.Panel>
         </Tab.Panels>
       </Tab>
     </Card>

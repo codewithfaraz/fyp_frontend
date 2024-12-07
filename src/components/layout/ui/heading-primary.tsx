@@ -6,6 +6,6 @@ export default function HeadingPrimary({
   styles?: string;
 }) {
   return (
-    <h1 className={`text-3xl md:text-6xl space-y-6 ${styles}`}>{children}</h1>
+    <h1 className={`text-5xl md:text-6xl space-y-6 ${styles}`}>{children}</h1>
   );
 }

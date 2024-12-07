@@ -20,9 +20,7 @@ export default function SigninForm() {
     if (response.status != 200) {
       toast.error("Invalid email or password");
     } else if (response.status == 200) {
-      if (data.rememverMe) {
-        setSession(response.data.data.token);
-      }
+      setSession(response.data.data.token);
       navigate("/");
     }
   }
@@ -54,12 +52,12 @@ export default function SigninForm() {
         errorClassName="text-red-500"
       />
       <div className="flex items-center justify-between">
-        <Checkbox
+        {/* <Checkbox
           label="Remember me"
           size="sm"
           {...register("rememverMe")}
           className="hidden md:block"
-        />
+        /> */}
         <Link to="/" className="text-blue-500 text-sm underline">
           Forgot Password?
         </Link>

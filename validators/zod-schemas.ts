@@ -4,7 +4,7 @@ import { errorMessages } from "../data/messages";
 export const signin = z.object({
   email: z.string().email({ message: errorMessages.emailMessage }),
   password: z.string().min(8, { message: errorMessages.passwordMessage }),
-  rememverMe: z.boolean().optional(),
+  // rememverMe: z.boolean().optional(),
 });
 //schema for signup
 export const signup = z
@@ -23,6 +23,7 @@ export const signup = z
 //schema for user profile
 export const userProfile = z.object({
   firstName: z.string().nonempty({ message: errorMessages.firstNameMessage }),
+  shortBio: z.string().nonempty({ message: "Must enter short Bio" }),
   lastName: z.string().optional(),
   dateOfBirth: z
     .string()
@@ -51,11 +52,37 @@ export const innovatorFinishPage = z.object({
   skills: z.array(z.string()).nonempty("Select at least one skill."),
   experienceLevel: z.string().nonempty("Experience level is required."),
 });
-//export type
-
+//zod schema for first step of idea
+export const ideaFirstStep = z.object({
+  title: z.string().nonempty("Title is required."),
+});
+//zod schema for second step of idea
+export const ideaSecondStep = z.object({
+  problemDescription: z.string().nonempty("Required"),
+  proposedSolution: z.string().nonempty("Required"),
+  innovativeAspects: z.string().nonempty("Required"),
+  marketNeeded: z.string().nonempty("Required"),
+  targetedAudience: z.string().nonempty("Required"),
+  competitiveAnalysis: z.string().nonempty("Required"),
+});
+//zod schema for final step of idea
+export const ideaFinalStep = z.object({
+  funds: z.string(),
+});
+//reset password Schema
+export const resetPassword = z.object({
+  currentPassword: z
+    .string()
+    .min(8, { message: errorMessages.passwordMessage }),
+  newPassword: z.string().min(8, { message: errorMessages.passwordMessage }),
+});
 //export types
 export type Signin = z.infer<typeof signin>;
 export type Signup = z.infer<typeof signup>;
 export type InnovatorFinishPage = z.infer<typeof innovatorFinishPage>;
 export type UserProfile = z.infer<typeof userProfile>;
 export type ContactInformation = z.infer<typeof contactInformation>;
+export type IdeaFirstStep = z.infer<typeof ideaFirstStep>;
+export type IdeaSecondStep = z.infer<typeof ideaSecondStep>;
+export type IdeaFinalStep = z.infer<typeof ideaFinalStep>;
+export type ResetPassword = z.infer<typeof resetPassword>;

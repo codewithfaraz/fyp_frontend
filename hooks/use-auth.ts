@@ -42,7 +42,23 @@ export const useAuth = () => {
       console.log(err);
     }
   }, []);
+
+  const resetUserPassword = useCallback(
+    async (payload: { username: ""; currentPassword: ""; newPassword: "" }) => {
+      console.log(payload);
+      try {
+        const response = await AuthController.updatePassword(payload);
+        // console.log(response, "@handle");
+        return response;
+      } catch (err) {
+        console.log(err, "@handle");
+        return err;
+      }
+    },
+    []
+  );
   return {
+    resetUserPassword,
     handleLogin,
     handleSignup,
     setSession,

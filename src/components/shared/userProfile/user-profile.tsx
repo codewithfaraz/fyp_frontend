@@ -12,7 +12,7 @@ export default function UserProfle({
   submit: (data: UserProfile) => void;
 }) {
   const [currentGender, setCurrentGender] = useState(GenderOptions[0]);
-
+  const [state, setState] = useState("");
   const {
     register,
     handleSubmit,
@@ -42,7 +42,16 @@ export default function UserProfle({
         // {...register("gender")}
         onChange={(option: any) => setCurrentGender(option)} // Ensure the onChange handler is correct
       />
-
+      <Input
+        label="Short Bio"
+        value={state}
+        maxLength={200}
+        error={errors.shortBio?.message}
+        {...register("shortBio")}
+        onChange={(e) => setState(() => e.target.value)}
+        suffix={state.length + `/200`}
+        suffixClassName="opacity-70"
+      />
       <Input
         type="date"
         label="Date"

@@ -14,7 +14,19 @@ export const useExpert = () => {
     },
     []
   );
+  const getExpert = async (username: string) => {
+    try {
+      const response = await ExpertController.getExpert({
+        username: username,
+      });
+      return response;
+    } catch (err) {
+      console.log(err, "@handle");
+      return err;
+    }
+  };
   return {
     addExpertHandler,
+    getExpert,
   };
 };

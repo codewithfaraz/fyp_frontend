@@ -20,5 +20,21 @@ class ExpertController {
         });
     });
   }
+  static getExpert(data: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      apiClient
+        .get("/expert/get-expert", { params: data })
+        .then((res) => {
+          if (res.status === 200) {
+            resolve(res);
+          } else {
+            reject(res); // Handles non-200 statuses
+          }
+        })
+        .catch(({ response }) => {
+          reject(response); // Handles network or unexpected errors
+        });
+    });
+  }
 }
 export default ExpertController;

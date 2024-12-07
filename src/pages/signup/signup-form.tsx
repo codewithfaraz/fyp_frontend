@@ -40,7 +40,7 @@ export default function SignupForm() {
       setIsLodaing(false);
     } else if (response.status === 201) {
       dispatcher(userActions.setUser(response.data.user));
-      navigate("/home");
+      navigate("/");
     }
   }
   const {
