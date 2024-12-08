@@ -1,6 +1,7 @@
 import { Tab,Table,Badge,Password,Button,Box,Grid, Bold } from "rizzui";
 import UserAcount from "../../components/shared/userProfile/user-account";
 import Card from "../../components/layout/ui/card";
+<<<<<<< Updated upstream
 import MainTable from "../../components/table/table";
 import From from "../../components/shared/form/form";
 import { useState } from "react";
@@ -14,6 +15,9 @@ import { defaultData } from "..//..//..//data/table";
 import { defaultColumns } from "..//..//components/table/column";
 import TableToolbar from "..//..//components/table/toolbar";
 import TablePagination from "..//..//components/table/pagination";
+=======
+import IdeaTable from "../../components/table/ideaTable";
+>>>>>>> Stashed changes
 
 
 
@@ -71,6 +75,7 @@ export default function ExpertProfile() {
           <Tab.Panel>
             <UserAcount data={user} />
           </Tab.Panel>
+<<<<<<< Updated upstream
 //Achievements here
           <Tab.Panel>
 
@@ -132,6 +137,12 @@ export default function ExpertProfile() {
       </div>
       </From>
     </Tab.Panel>
+=======
+          <Tab.Panel>
+            <IdeaTable data={expertData}/>
+          </Tab.Panel>
+          <Tab.Panel>Account Settings</Tab.Panel>
+>>>>>>> Stashed changes
         </Tab.Panels>
       </Tab>
     </Card>
