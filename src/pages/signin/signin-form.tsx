@@ -1,26 +1,32 @@
+import { useState } from "react";
 import Form from "../../components/shared/form/form";
-import { Input, Password, Checkbox, Button } from "rizzui";
-import { useForm } from "react-hook-form";
+import { Input, Password, Button } from "rizzui";
+import { set, useForm } from "react-hook-form";
 import { PiArrowRightBold } from "react-icons/pi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useAuth } from "../../../hooks/use-auth";
+import { useUser } from "../../../hooks/user-hook";
 import { Signin, signin } from "../../../validators/zod-schemas";
 import GetAToast from "../../components/shared/get-a-toast";
 export default function SigninForm() {
   //states
   const { handleLogin, setSession } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   async function submit(data: Signin) {
     console.log(data);
     const { email, password } = data;
+    setIsLoading(true);
     const response = await handleLogin({ email, password });
-    console.log(response);
+    setIsLoading(false);
     if (response.status != 200) {
       toast.error("Invalid email or password");
     } else if (response.status == 200) {
       setSession(response.data.data.token);
+      // const user = await getUserByEmail({ email });
+      // console.log(user);
       navigate("/");
     }
   }
@@ -64,7 +70,7 @@ export default function SigninForm() {
       </div>
       <div className="space-y-3">
         <Button
-          isLoading={false}
+          isLoading={isLoading}
           type="submit"
           size="lg"
           variant="solid"

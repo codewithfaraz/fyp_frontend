@@ -8,7 +8,13 @@ import {
   ideaFinalStep,
 } from "../../../../../validators/zod-schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-export default function FinishStep({ onSubmit }: { onSubmit: any }) {
+export default function FinishStep({
+  onSubmit,
+  isSubmitting,
+}: {
+  onSubmit: any;
+  isSubmitting: any;
+}) {
   const ideaStages = [
     { value: "refining", label: "Refining" },
     { value: "refined", label: "Refined" },
@@ -67,7 +73,7 @@ export default function FinishStep({ onSubmit }: { onSubmit: any }) {
             setFileState("");
           }}
         />
-        <Button size="xl" type="submit">
+        <Button size="xl" type="submit" isLoading={isSubmitting}>
           Finish
         </Button>
       </Form>

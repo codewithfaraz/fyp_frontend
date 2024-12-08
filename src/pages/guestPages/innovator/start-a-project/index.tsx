@@ -6,13 +6,24 @@ import StartStep from "./start-step";
 import Card from "../../../../components/layout/ui/card";
 import FinishStep from "./finish-step";
 import ProblemStep from "./problem-step";
+import { useSelector } from "react-redux";
+import { useIdea } from "../../../../../hooks/use-idea";
 export default function StartAProject() {
+  const username = useSelector((state: any) => state.user?.user.username);
+  const { addIdea } = useIdea();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
-  function submit(data: any) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  async function submit(data: any) {
     const newData = { ...formData, ...data };
-    console.log(newData);
     setFormData(newData);
+    if (currentStep === 2) {
+      console.log("now submit data");
+      setIsSubmitting(true);
+      const response = await addIdea({ ...newData, username });
+      setIsSubmitting(false);
+      console.log(response);
+    }
     setCurrentStep((prev) => prev + 1);
   }
   return (
@@ -32,7 +43,9 @@ export default function StartAProject() {
         </Stepper>
         {currentStep === 0 && <StartStep onSubmit={submit} />}
         {currentStep === 1 && <ProblemStep onSubmit={submit} />}
-        {currentStep === 2 && <FinishStep onSubmit={submit} />}
+        {currentStep === 2 && (
+          <FinishStep onSubmit={submit} isSubmitting={isSubmitting} />
+        )}
       </Card>
     </Card>
   );

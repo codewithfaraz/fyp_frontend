@@ -31,6 +31,7 @@ export default function InnovatorRegiseration() {
     const username = user.username;
     if (currentStep === 2) {
       setIsSubmiting(true);
+      console.log(userProfiling);
       const response = await addInnovatorHandler({
         ...userProfiling,
         username,

@@ -1,7 +1,7 @@
 import React from "react";
 import Logo from "../../../assets/Images/logo.png";
 import Showcase from "../../../assets/Images/showcase-image.png";
-
+import { Link } from "react-router-dom";
 type authTypes = {
   children: React.ReactNode;
   heading: any;

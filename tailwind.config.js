@@ -1,12 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 
-const colors = require("tailwindcss/colors");
-module.exports = {
+import colors from 'tailwindcss/colors';
+import forms from '@tailwindcss/forms';
+
+export default {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/rizzui/dist/*.{js,ts,jsx,tsx}",
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    './src/components/**/*.{js,ts,jsx,tsx}',
+    './node_modules/rizzui/dist/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
@@ -84,5 +86,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [forms],
 };

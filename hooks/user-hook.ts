@@ -22,8 +22,20 @@ export const useUser = () => {
       return err;
     }
   };
+  const getUserByEmail = async (payload: any) => {
+    try {
+      const response = await UserControllers.getUser({
+        payload,
+      });
+      return response;
+    } catch (err) {
+      console.log(err, "@handle");
+      return err;
+    }
+  };
   return {
     getUserRoles,
     getUser,
+    getUserByEmail,
   };
 };

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { PiNotePencilThin } from "react-icons/pi";
 import { Button, Modal, Badge } from "rizzui";
 import Card from "../../layout/ui/card";
+import EditProfile from "./editProfile";
 export default function UserAcount({
   data,
   userType,
@@ -13,7 +14,11 @@ export default function UserAcount({
   return (
     <Card styles="px-12 w-full">
       <Modal isOpen={isModelOpen} onClose={() => setIsModelOpen(false)}>
-        <h1>hjfsdj</h1>
+        <EditProfile
+          data={data}
+          userType={userType}
+          cancelButtonClick={() => setIsModelOpen(false)}
+        />
       </Modal>
       <div className="flex flex-col items-baseline space-y-12 w-full">
         <div className="flex items-center justify-between w-full">
@@ -54,7 +59,7 @@ export default function UserAcount({
         <div>
           <h1 className="text-xl text-black font-bold">About</h1>
           <div
-            className="px-12"
+            className=""
             dangerouslySetInnerHTML={{ __html: data.profileDescription }}
           />
         </div>
@@ -63,10 +68,14 @@ export default function UserAcount({
             data?.InvestingExperience.map((skill: string) => {
               return <Badge variant="flat">{skill.replace("_", " ")}</Badge>;
             })}
+        </div>
+        <div className="flex gap-3">
           {data.experties &&
             data?.experties.map((expertie: string) => {
               return <Badge variant="flat">{expertie.replace("_", " ")}</Badge>;
             })}
+        </div>
+        <div className="flex gap-3">
           {data.skills &&
             data?.skills.map((skill: string) => {
               return <Badge variant="flat">{skill.replace("_", " ")}</Badge>;

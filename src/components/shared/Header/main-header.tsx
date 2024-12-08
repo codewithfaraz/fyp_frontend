@@ -1,9 +1,10 @@
 import Logo from "../../../assets/Images/logo.png";
-import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Dropdown, Avatar } from "rizzui";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import { userActions } from "../../../../store/store";
 import Footer from "../footer";
 export default function MainHeader() {
   const user = useSelector((state: any) => state.user.user);
@@ -70,7 +71,17 @@ export default function MainHeader() {
 }
 const DropDown = () => {
   const user = useSelector((state: any) => state.user.user);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  //function to signout user
+  function signoutHandler(e: any) {
+    e.preventDefault();
+    localStorage.removeItem("loginToken");
+    localStorage.removeItem("persist:profile");
+    localStorage.removeItem("persist:user");
+    dispatch(userActions.setUser({}));
+    navigate("/sign-up");
+  }
   return (
     <Dropdown placement="bottom-end" className="">
       <Dropdown.Trigger>
@@ -90,7 +101,9 @@ const DropDown = () => {
           <Link to="/profile">Profile</Link>
         </Dropdown.Item>
         <Dropdown.Item className="border-t border-t-[#ccc] mt-4 pt-3">
-          <Link to="/sign-up">Sign Out</Link>
+          <Link to="#" onClick={signoutHandler}>
+            Logout
+          </Link>
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
