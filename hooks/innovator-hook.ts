@@ -25,8 +25,18 @@ export const useInnovator = () => {
       return err;
     }
   };
+  const updateInnovator = async (payload: any) => {
+    try {
+      const response = await InnovatorController.updateInnovator(payload);
+      return response;
+    } catch (err) {
+      console.log(err, "@handle");
+      return err;
+    }
+  };
   return {
     addInnovatorHandler,
     getInnovator,
+    updateInnovator
   };
 };

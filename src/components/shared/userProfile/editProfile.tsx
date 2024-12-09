@@ -22,8 +22,10 @@ export default function EditProfile({
   data,
   userType,
   cancelButtonClick,
+  onSave,
 }: {
   data: any;
+  onSave:any
   userType: string;
   cancelButtonClick: any;
 }) {
@@ -46,17 +48,18 @@ export default function EditProfile({
   }
   function saveFormHandler(data: any) {
     data.preventDefault();
-    console.log({
+    onSave({
       firstName,
       lastName,
       country,
+      skills,
       city,
       yearsOfExperience,
       state,
       bg,
       content,
       experties,
-    });
+    })
   }
   return (
     <div className=" p-4 rounded-lg">

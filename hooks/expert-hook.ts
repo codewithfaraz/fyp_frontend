@@ -25,8 +25,18 @@ export const useExpert = () => {
       return err;
     }
   };
+  const updateExpert = async (payload: any) => {
+    try {
+      const response = await ExpertController.updateExpert(payload);
+      return response;
+    } catch (err) {
+      console.log(err, "@handle");
+      return err;
+    }
+  };
   return {
     addExpertHandler,
     getExpert,
+    updateExpert
   };
 };

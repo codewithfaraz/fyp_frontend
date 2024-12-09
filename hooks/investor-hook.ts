@@ -25,8 +25,18 @@ export const useInvestor = () => {
       return err;
     }
   };
+  const updateInvestor = async (payload: any) => {
+    try {
+      const response = await InvestorController.updateInvestor(payload);
+      return response;
+    } catch (err) {
+      console.log(err, "@handle");
+      return err;
+    }
+  };
   return {
     addInvestorHandler,
     getInvestor,
+    updateInvestor,
   };
 };
