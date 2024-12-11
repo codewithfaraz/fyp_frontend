@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Card from "../../components/layout/ui/card";
 import UserAcount from "../../components/shared/userProfile/user-account";
 import { useInvestor } from "../../../hooks/investor-hook";
+import IdeaTable from "../../components/table/ideaTable";
 export default function InvestorProfile({ user }: { user: any }) {
   const { getInvestor } = useInvestor();
   const [investorData, setInvestorData] = useState({});
@@ -43,7 +44,9 @@ export default function InvestorProfile({ user }: { user: any }) {
           <Tab.Panel>
             <UserAcount data={investorData} userType="investor" />
           </Tab.Panel>
-          <Tab.Panel>Investments Table</Tab.Panel>
+          <Tab.Panel>
+            <IdeaTable data={investorData} />
+          </Tab.Panel>
           <Tab.Panel>Account Settings</Tab.Panel>
         </Tab.Panels>
       </Tab>

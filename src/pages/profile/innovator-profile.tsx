@@ -3,7 +3,7 @@ import { Tab } from "rizzui";
 import Card from "../../components/layout/ui/card";
 import UserAcount from "../../components/shared/userProfile/user-account";
 import { useInnovator } from "../../../hooks/innovator-hook";
-
+import IdeaTable from "../../components/table/ideaTable";
 export default function InnovatorProfile({ user }: { user: any }) {
   const { getInnovator } = useInnovator();
   const [innovatorData, setInnovatorData] = useState({});
@@ -14,8 +14,8 @@ export default function InnovatorProfile({ user }: { user: any }) {
       setIsVertical(window.innerWidth >= 768);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -46,7 +46,9 @@ export default function InnovatorProfile({ user }: { user: any }) {
           <Tab.Panel>
             <UserAcount data={innovatorData} userType="innovator" />
           </Tab.Panel>
-          <Tab.Panel>Idea Table</Tab.Panel>
+          <Tab.Panel>
+            <IdeaTable data={innovatorData} />
+          </Tab.Panel>
           <Tab.Panel>Account Settings</Tab.Panel>
         </Tab.Panels>
       </Tab>

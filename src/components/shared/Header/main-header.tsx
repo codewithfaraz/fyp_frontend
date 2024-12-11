@@ -8,12 +8,11 @@ import { userActions } from "../../../../store/store";
 import Footer from "../footer";
 import { useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-
 export default function MainHeader() {
   const user = useSelector((state: any) => state.user.user);
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  console.log(user);
   const navLinks = [
     { to: "/innovators", label: "Innovators" },
     { to: "/investors", label: "Investors" },

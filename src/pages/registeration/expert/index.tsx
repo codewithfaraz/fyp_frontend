@@ -33,7 +33,7 @@ export default function ExpertRegisteration() {
       const response = await addExpertHandler({ ...userProfiling, username });
       setIsSubmiting(false);
       if (response.status == 200) {
-        navigate("/profile/expert");
+        navigate("/innovator");
       } else {
         toast.error(response.data.data.message);
       }

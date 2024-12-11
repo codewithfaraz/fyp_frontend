@@ -33,7 +33,7 @@ export default function InvestorRegiseration() {
       const response = await addInvestorHandler({ ...userProfiling, username });
       setIsSubmiting(false);
       if (response.status == 200) {
-        navigate("/profile/investor");
+        navigate("/innovator");
       } else {
         toast.error(response.data.data.message);
       }

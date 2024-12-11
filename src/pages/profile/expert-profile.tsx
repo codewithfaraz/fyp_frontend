@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useExpert } from "../../../hooks/expert-hook";
 import UserAcount from "../../components/shared/userProfile/user-account";
 import Card from "../../components/layout/ui/card";
-
+import IdeaTable from "../../components/table/ideaTable";
 export default function ExpertProfile({ user }: { user: any }) {
   const { getExpert } = useExpert();
   const [expertData, setExpertData] = useState({});
@@ -15,8 +15,8 @@ export default function ExpertProfile({ user }: { user: any }) {
       setIsVertical(window.innerWidth >= 768);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -53,7 +53,9 @@ export default function ExpertProfile({ user }: { user: any }) {
               isLoading={isLoading}
             />
           </Tab.Panel>
-          <Tab.Panel>Idea Table</Tab.Panel>
+          <Tab.Panel>
+            <IdeaTable data={expertData} />
+          </Tab.Panel>
           <Tab.Panel>Account Settings</Tab.Panel>
         </Tab.Panels>
       </Tab>
