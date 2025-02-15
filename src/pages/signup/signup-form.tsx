@@ -21,6 +21,15 @@ export default function SignupForm() {
   const dispatcher = useDispatch();
   const { handleSignup } = useAuth();
   const navigate = useNavigate();
+
+  // Custom email domain validation function
+  const validateEmailDomain = (email: string) => {
+    const allowedDomains = ["gmail.com", "hotmail.com"];
+    const emailDomain = email.split("@")[1];
+    return allowedDomains.includes(emailDomain) || "Invalid email domain";
+  };
+
+
   async function submit(data: Signup) {
     const { email, password, username } = data;
     setIsLodaing(true);
@@ -56,13 +65,13 @@ export default function SignupForm() {
         label="Email"
         type="email"
         placeholder="Enter your email"
-        {...register("email")}
+        {...register("email", { validate: validateEmailDomain })}
         inputClassName={`${errors.email ? "border-red-500" : ""}`}
         errorClassName="text-red-500"
         error={
           errors.email
             ? errors.email.message
-            : duplicateEmail && "Email already exist"
+            : (duplicateEmail ? "Email already exist" : undefined)
         }
       />
       <Input
@@ -73,7 +82,7 @@ export default function SignupForm() {
         error={
           errors.username
             ? errors.username.message
-            : duplicateUsername && "Username already exist"
+            : (duplicateUsername ? "Username already exist" : undefined)
         }
       />
       <div className="flex space-x-3">
