@@ -20,6 +20,9 @@ export default function UserProfle({
   } = useForm<UserProfile>({
     resolver: zodResolver(userProfile),
   });
+
+  const today = new Date().toISOString().split("T")[0];
+  
   return (
     <Form style="my-12 w-full" onSubmit={handleSubmit(submit)}>
       <Input
@@ -57,6 +60,7 @@ export default function UserProfle({
         label="Date"
         {...register("dateOfBirth")}
         error={errors.dateOfBirth?.message}
+        max={today}
       />
       <Button size="xl" type="submit">
         Next
