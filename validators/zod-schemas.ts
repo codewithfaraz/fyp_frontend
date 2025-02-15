@@ -7,19 +7,24 @@ export const signin = z.object({
   // rememverMe: z.boolean().optional(),
 });
 //schema for signup
-export const signup = z
-  .object({
-    email: z.string().email({ message: errorMessages.emailMessage }),
-    username: z.string().nonempty({ message: errorMessages.usernameMessage }),
-    password: z.string().min(8, { message: errorMessages.passwordMessage }),
-    confirmPassword: z
-      .string()
-      .min(8, { message: errorMessages.confirmPasswordMessage }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: errorMessages.confirmPasswordMessage,
-    path: ["confirmPassword"],
-  });
+export const signup = z.object({
+  email: z
+    .string()
+    .email("Invalid email address")
+    .refine(
+      (email) => email.endsWith("@gmail.com") || email.endsWith("@hotmail.com"),
+      {
+        message: "Email must be a @gmail.com or @hotmail.com address",
+      }
+    ),
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string().min(6, "Confirm Password must be at least 6 characters"),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
+
 //schema for user profile
 export const userProfile = z.object({
   firstName: z.string().nonempty({ message: errorMessages.firstNameMessage }),
