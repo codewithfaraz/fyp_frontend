@@ -22,7 +22,7 @@ export default function UserProfle({
   });
 
   const today = new Date().toISOString().split("T")[0];
-  
+
   return (
     <Form style="my-12 w-full" onSubmit={handleSubmit(submit)}>
       <Input
@@ -57,7 +57,7 @@ export default function UserProfle({
       />
       <Input
         type="date"
-        label="Date"
+        label="Date of Birth"
         {...register("dateOfBirth")}
         error={errors.dateOfBirth?.message}
         max={today}

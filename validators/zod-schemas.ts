@@ -37,12 +37,10 @@ export const userProfile = z.object({
 });
 //schema for contact information
 export const contactInformation = z.object({
-  phoneNo: z
-    .string()
-    .nonempty({ message: errorMessages.phoneNumberErrorMessage }),
-  country: z.string().nonempty({ message: errorMessages.countryErrorMessage }),
-  city: z.string().nonempty({ message: errorMessages.cityErrorMessage }),
-  // city: z.string().nonempty({ message: errorMessages.phoneNumberMessage }),
+  phoneNo: z.string().nonempty("Phone number is required"),
+  country: z.string().nonempty("Country is required"),
+  state: z.string().nonempty("State is required"),
+  city: z.string().nonempty("City is required"),
 });
 export const innovatorFinishForm = z.object({
   experties: z.string().nonempty({ message: errorMessages.expertiesMessage }),
