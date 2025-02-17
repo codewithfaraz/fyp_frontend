@@ -25,6 +25,24 @@ export const useInnovator = () => {
       return err;
     }
   };
+  const getAllInnovators = async () => {
+    try {
+      const response = await InnovatorController.getAllInnovators();
+      return response;
+    } catch (err) {
+      console.log(err, "@handle");
+      return err;
+    }
+  };
+  const getNewInnovators = async () => {
+    try {
+      const response = await InnovatorController.getFeaturedInnovaors();
+      return response;
+    } catch (err) {
+      console.log(err, "@handle");
+      return err;
+    }
+  };
   const updateInnovator = async (payload: any) => {
     try {
       const response = await InnovatorController.updateInnovator(payload);
@@ -37,6 +55,8 @@ export const useInnovator = () => {
   return {
     addInnovatorHandler,
     getInnovator,
-    updateInnovator
+    updateInnovator,
+    getNewInnovators,
+    getAllInnovators,
   };
 };

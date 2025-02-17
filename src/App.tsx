@@ -9,9 +9,9 @@ import PrivacyPolicy from "./pages/privacy-policy";
 import { useAuth } from "../hooks/use-auth";
 import MainHeader from "./components/shared/Header/main-header";
 import InvestorPage from "./pages/guestPages/investor";
-import InnovatorProfile from "./pages/profile/innovator-profile";
-import ExpertProfile from "./pages/profile/expert-profile";
-import InvestorProfile from "./pages/profile/investor-profile";
+// import InnovatorProfile from "./pages/profile/innovator-profile";
+// import ExpertProfile from "./pages/profile/expert-profile";
+// import InvestorProfile from "./pages/profile/investor-profile";
 import InnovatorPage from "./pages/guestPages/innovator";
 import ExpertPage from "./pages/guestPages/expert";
 import Innovator from "./pages/innovator";
@@ -19,6 +19,7 @@ import StartAProject from "./pages/guestPages/innovator/start-a-project";
 import Home from ".";
 import Profile from "./pages/profile/profile";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+console.log(import.meta.env.VITE_SUPABASE_PROJECT_URL);
 const router = createBrowserRouter([
   {
     path: "/",

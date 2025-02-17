@@ -1,210 +1,59 @@
-import { Select, Button } from "rizzui";
 import { useState } from "react";
+import { Button } from "rizzui";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import InnovatorProfileCard from "../../../components/shared/innovator/innovator-profile-card";
-import ImageCarousal from "../../../components/layout/ui/image-carousal";
 import Card from "../../../components/layout/ui/card";
 import HeadingPrimary from "../../../components/layout/ui/heading-primary";
+import { UserCard } from "../../../components/shared/Users/userProfileCard";
+import { apiClient } from "../../../../api/api.config";
+import { useQuery } from "@tanstack/react-query";
+import { UserFilter } from "../../../components/shared/filter/userFilter";
+// fetching all innovators
+async function fetchInnovators() {
+  const response = await apiClient.get("/innovator/new");
+  return response.data.data.innovators; // Adjust based on your API response structure
+}
+//fetching filtered innovators
+async function fetchFilteredInnovators(country: string, experience: string) {
+  const response = await apiClient.post("/innovator/filter", {
+    country: country || undefined,
+    experience: experience || undefined,
+  });
+  console.log(response.data.data.innovators);
+  return response.data.data.innovators; // Adjust based on your API response structure
+}
 export default function InnovatorPage() {
-  const users_ = {
-    Business: [
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-    ],
-    Technology: [
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-    ],
-    HealthCar: [
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-    ],
-    Finance: [
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-    ],
-    Environemnt: [
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-    ],
-    Science: [
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-    ],
-    CreativeArts: [
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-    ],
-    Education: [
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-    ],
-    SocialImpacts: [
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-      {
-        name: "John Doe",
-        userType: "Innvator",
-        imageUrl: "https://randomuser.me/api/portraits/women/40.jpg",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos. Quisquam quibusdam, voluptatum, quidem, quod autem fugit nemo quae quia voluptates doloribus quos.",
-        skills: ["Technology", "Health care"],
-      },
-    ],
-  };
-  const categories = [
-    { label: "Technology", value: "technology" },
-    { label: "HealthCar", value: "health care" },
-    { label: "Finance", value: "finance" },
-    { label: "Environemnt", value: "environemnt" },
-    { label: "Business", value: "business" },
-    { label: "Science", value: "science" },
-    { label: "CreativeArts", value: "creative arts" },
-    { label: "Education", value: "education" },
-    { label: "SocialImpacts", value: "social impacts" },
-    { label: "Industrial", value: "Industrial" },
-    { label: "Products", value: "products" },
-    { label: "Transportation", value: "transportation" },
-  ];
-
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-  const username = useSelector((state: any) => state.user.user?.username);
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedExperience, setselectedExperience] = useState("");
+  function locationFilter(v: string) {
+    console.log(v);
+    setSelectedCountry(v);
+  }
+  function experienceFIlter(v: string) {
+    console.log(v);
+    setselectedExperience(v);
+  }
   const navigate = useNavigate();
+  const username = useSelector((state: any) => state.user.user?.username);
+
+  // Fetch innovators using react-query
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["innovators"], // Unique query key
+    queryFn: fetchInnovators, // Your API call function
+  });
+  const {
+    data: filteredUsers,
+    isLoading: filteredUserLoading,
+    error: filteredUserError,
+  } = useQuery({
+    queryKey: ["filteredInnovators", selectedCountry, selectedExperience], // Unique query key
+    queryFn: () => fetchFilteredInnovators(selectedCountry, selectedExperience), // Your API call function
+  });
+
+  // Slicing logic for top 3 users
+  const newUsers = data ? data.slice(0, 3) : [];
+
+  // Button click handler
   function buttonClickHandler(e: any) {
     if (!username) {
       navigate("/sign-up");
@@ -212,6 +61,7 @@ export default function InnovatorPage() {
       navigate("/registeration/innovator");
     }
   }
+  if (!filteredUserLoading) console.log(filteredUsers);
   return (
     <>
       <Card styles="flex flex-col">
@@ -228,34 +78,63 @@ export default function InnovatorPage() {
         >
           Join Innovator Hub
         </Button>
-        <Select
-          label="Select Category"
-          options={categories}
-          className="mb-12 h-12"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e)}
-        />
-        <span className="">
-          Trendings in
-          <h1 className="text-3xl mb-4 font-bold">{selectedCategory.label}</h1>
-        </span>
-        <ImageCarousal
-          settings={{
-            slidesToShow: 3,
-            autoplay: true,
-            autoplaySpeed: 3000,
-          }}
-          styles="flex"
-        >
-          {users_[selectedCategory.label]?.map((user) => {
-            return (
-              <InnovatorProfileCard
-                user={user}
-                key={Math.random().toString()}
-              />
-            );
-          })}
-        </ImageCarousal>
+        <div className="flex flex-col items-center mt-12 space-y-5">
+          <h1 className="text-3xl font-bold text-primary">
+            Newly Registered Innovators
+          </h1>
+          <h2 className="text-[#727077]">
+            Meet new innovators who are making significant contributions in
+            their fields.
+          </h2>
+          {/* Display new registered innovators */}
+          <div className="flex flex-wrap gap-4">
+            {isLoading ? (
+              <h1>Loading...</h1> // Show loading state
+            ) : error ? (
+              <div>
+                <h1 className="text-red-500">
+                  {error instanceof Error ? error.message : "An error occurred"}
+                </h1>
+              </div> // Handle error state
+            ) : newUsers.length > 0 ? (
+              newUsers.map((user: any) => (
+                <UserCard user={user} key={user.id} userType="Innovator" />
+              ))
+            ) : (
+              <div>
+                <h1 className="text-[#727077]">No Innovator found</h1>
+              </div> // Handle empty state
+            )}
+          </div>
+        </div>
+        <div>
+          <UserFilter
+            locationFIlter={locationFilter}
+            userType="Innovator"
+            experienceFilter={experienceFIlter}
+          />
+          <div className="flex flex-wrap gap-4">
+            {filteredUserLoading ? (
+              <h1>Loading...</h1> // Show loading state
+            ) : filteredUserError ? (
+              <div>
+                <h1 className="text-red-500">
+                  {filteredUserError instanceof Error
+                    ? filteredUserError.message
+                    : "An error occurred"}
+                </h1>
+              </div> // Handle error state
+            ) : filteredUsers.length > 0 ? (
+              filteredUsers.map((user: any) => (
+                <UserCard user={user} key={user.id} userType="Innovator" />
+              ))
+            ) : (
+              <div>
+                <h1 className="text-[#727077]">No Innovator found</h1>
+              </div> // Handle empty state
+            )}
+          </div>
+        </div>
       </Card>
     </>
   );
