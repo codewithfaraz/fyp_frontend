@@ -24,6 +24,7 @@ export default function SignupForm() {
   async function submit(data: Signup) {
     const { email, password, username } = data;
     setIsLodaing(true);
+    //here we have to put our signup logic
     const response = await handleSignup({
       email,
       password,
