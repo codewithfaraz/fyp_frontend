@@ -34,7 +34,7 @@ export default function Innovator() {
   return (
     <>
       <Hero buttonTitle="Start a Project" link="/innovator/start-a-project" />
-      {/* investors */}
+
       <Card styles="my-24">
         <HeadingPrimary styles="my-12">
           <span className="text-[#A3705f] underline">Discover investors</span>{" "}

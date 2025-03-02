@@ -8,6 +8,7 @@ import { UserCard } from "../../../components/shared/Users/userProfileCard";
 import { apiClient } from "../../../../api/api.config";
 import { useQuery } from "@tanstack/react-query";
 import { UserFilter } from "../../../components/shared/filter/userFilter";
+import UserProfileCardSkeleton from "../../../components/shared/skeleton/UserProfileCardSkeleton";
 // fetching all innovators
 async function fetchInnovators() {
   const response = await apiClient.get("/innovator/new");
@@ -89,7 +90,11 @@ export default function InnovatorPage() {
           {/* Display new registered innovators */}
           <div className="flex flex-wrap gap-4">
             {isLoading ? (
-              <h1>Loading...</h1> // Show loading state
+              <div className="flex flex-wrap gap-4">
+                {[1, 2, 3].map((i) => {
+                  return <UserProfileCardSkeleton key={i} />;
+                })}
+              </div>
             ) : error ? (
               <div>
                 <h1 className="text-red-500">
@@ -115,7 +120,11 @@ export default function InnovatorPage() {
           />
           <div className="flex flex-wrap gap-4">
             {filteredUserLoading ? (
-              <h1>Loading...</h1> // Show loading state
+              <div className="flex flex-wrap gap-4">
+                {[1, 2, 3].map((i) => {
+                  return <UserProfileCardSkeleton key={i} />;
+                })}
+              </div> // Show loading state
             ) : filteredUserError ? (
               <div>
                 <h1 className="text-red-500">

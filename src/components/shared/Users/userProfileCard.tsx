@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 export const UserCard = ({
   user,
   userType,
@@ -5,8 +6,17 @@ export const UserCard = ({
   user: any;
   userType: string;
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/profile/${userType.toLowerCase()}/${user.username}`);
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+    <div
+      onClick={handleClick}
+      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
+    >
       <div className="p-6">
         {/* Header with Image and Name */}
         <div className="flex items-center space-x-4">

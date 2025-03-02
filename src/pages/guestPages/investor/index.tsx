@@ -8,6 +8,7 @@ import HeadingPrimary from "../../../components/layout/ui/heading-primary";
 import { useQuery } from "@tanstack/react-query";
 import { UserCard } from "../../../components/shared/Users/userProfileCard";
 import { UserFilter } from "../../../components/shared/filter/userFilter";
+import UserProfileCardSkeleton from "../../../components/shared/skeleton/UserProfileCardSkeleton";
 // fetching new investors
 async function fetchInvestors() {
   const response = await apiClient.get("/investor/new");
@@ -80,7 +81,11 @@ export default function InvestorPage() {
           {/* Display new registered innovators */}
           <div className="flex flex-wrap gap-4">
             {isLoading ? (
-              <h1>Loading...</h1> // Show loading state
+              <div className="flex flex-wrap gap-4">
+                {[1, 2, 3].map((i) => {
+                  return <UserProfileCardSkeleton key={i} />;
+                })}
+              </div>
             ) : error ? (
               <div>
                 <h1 className="text-red-500">
@@ -106,7 +111,11 @@ export default function InvestorPage() {
           />
           <div className="flex flex-wrap gap-4">
             {filteredUserLoading ? (
-              <h1>Loading...</h1> // Show loading state
+              <div className="flex flex-wrap gap-4">
+                {[1, 2, 3].map((i) => {
+                  return <UserProfileCardSkeleton key={i} />;
+                })}
+              </div>
             ) : filteredUserError ? (
               <div>
                 <h1 className="text-red-500">

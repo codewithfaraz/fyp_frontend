@@ -8,6 +8,7 @@ import { apiClient } from "../../../../api/api.config";
 import { useQuery } from "@tanstack/react-query";
 import { UserCard } from "../../../components/shared/Users/userProfileCard";
 import { UserFilter } from "../../../components/shared/filter/userFilter";
+import UserProfileCardSkeleton from "../../../components/shared/skeleton/UserProfileCardSkeleton";
 //fetch new experts
 async function fetchExperts() {
   const response = await apiClient.get("/expert/new");
@@ -82,7 +83,11 @@ export default function ExpertPage() {
           {/* Display new registered innovators */}
           <div className="flex flex-wrap gap-4">
             {isLoading ? (
-              <h1>Loading...</h1> // Show loading state
+              <div className="flex flex-wrap gap-4">
+                {[1, 2, 3].map((i) => {
+                  return <UserProfileCardSkeleton key={i} />;
+                })}
+              </div>
             ) : error ? (
               <div>
                 <h1 className="text-red-500">
@@ -108,7 +113,11 @@ export default function ExpertPage() {
           />
           <div className="flex flex-wrap gap-4">
             {filteredUserLoading ? (
-              <h1>Loading...</h1> // Show loading state
+              <div className="flex flex-wrap gap-4">
+                {[1, 2, 3].map((i) => {
+                  return <UserProfileCardSkeleton key={i} />;
+                })}
+              </div>
             ) : filteredUserError ? (
               <div>
                 <h1 className="text-red-500">
