@@ -9,8 +9,10 @@ import { useAuth } from "../hooks/use-auth";
 import MainHeader from "./components/shared/Header/main-header";
 import InvestorPage from "./pages/guestPages/investor";
 import ProfilePage from "./pages/profilePage";
+import InnovatorProfile from "./pages/profile/innovator-profile";
 import InnovatorPage from "./pages/guestPages/innovator";
 import ExpertPage from "./pages/guestPages/expert";
+import ViewIdea from "./components/table/viewIdea";
 // import Innovator from "./pages/innovator";
 import StartAProject from "./pages/guestPages/innovator/start-a-project";
 import Home from ".";
@@ -106,6 +108,10 @@ function App() {
             path="/profile/:usertype/:username"
             element={<ProfilePage />}
           />
+          <Route
+            path="/innovator/innovator-profile"
+            element={<InnovatorProfile user={undefined} />}
+          />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="profile" element={<Profile />} />
           <Route path="innovators" element={<InnovatorPage />} />
@@ -119,6 +125,7 @@ function App() {
           <Route path="innovator" element={<InnovatorRegiseration />} />
           <Route path="investor" element={<InvestorRegiseration />} />
         </Route>
+        <Route path="/view-idea" element={<ViewIdea />} />
       </Routes>
     </Router>
   );
