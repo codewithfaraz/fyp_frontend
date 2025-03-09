@@ -9,7 +9,11 @@ export const useAuth = () => {
       console.log(payload);
       try {
         const response = await AuthController.userLogin(payload);
-        // console.log(response, "@handle");
+
+        if (response.status === 200) {
+          dispatcher(userActions.setUser(response.data.data.user));
+        }
+
         return response;
       } catch (err) {
         console.log(err, "@handle");
@@ -36,6 +40,7 @@ export const useAuth = () => {
     try {
       const response = await AuthController.isAuthenticated();
       if (response.status === 200) {
+        console.log(response.data.user);
         dispatcher(userActions.setUser(response.data.user));
       }
     } catch (err) {

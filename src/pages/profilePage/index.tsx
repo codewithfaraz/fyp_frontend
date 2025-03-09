@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { apiClient } from "../../../api/api.config";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import UserProfilePageSkeleton from "../../components/shared/skeleton/UserProfilePageSkeleton";
 // import { User } from "../types/user";
 //function to fetch user data from the server
 async function fetchUser(
@@ -25,9 +27,8 @@ async function fetchUser(
   }
 }
 
-const DEFAULT_AVATAR =
-  "https://firebasestorage.googleapis.com/v0/b/webprojectimages-4ad07.appspot.com/o/fyp%20profile%20images%2Ff0faecca-b033-4814-991a-6b6993bd9bd6?alt=media&token=87381be2-b35a-4c2c-989b-57534310b004";
 export default function ProfilePage() {
+  const navigate = useNavigate();
   const { username, usertype } = useParams();
   console.log(usertype);
   const { data, isLoading, error } = useQuery({
@@ -41,7 +42,7 @@ export default function ProfilePage() {
   }
 
   if (isLoading) {
-    return <div>Loading ... </div>;
+    return <UserProfilePageSkeleton />;
   }
   return (
     <div>
@@ -87,7 +88,16 @@ export default function ProfilePage() {
                     </div>
                   </div>
                   <button
-                    onClick={() => console.log("Message clicked")}
+                    // here do somthing
+                    onClick={() => {
+                      console.log(usertype);
+                      console.log(data.username);
+                      const navigateTo = `/profile/${usertype?.toLowerCase()}/${
+                        data.username
+                      }`;
+                      console.log(navigateTo);
+                      return navigate(`/messages/${data.username}`);
+                    }}
                     className={`flex items-center space-x-2 px-4 py-2 text-white rounded-lg transition-colors duration-200 ${
                       usertype === "investor"
                         ? "bg-purple-600 hover:bg-purple-700"
@@ -109,6 +119,7 @@ export default function ProfilePage() {
                         d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
                       />
                     </svg>
+                    {/* here we have to do something */}
                     <span>Message</span>
                   </button>
                 </div>

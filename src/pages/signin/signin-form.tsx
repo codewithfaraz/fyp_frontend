@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Form from "../../components/shared/form/form";
 import { Input, Password, Button } from "rizzui";
-import { set, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
 import { PiArrowRightBold } from "react-icons/pi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,10 +12,21 @@ import { useUser } from "../../../hooks/user-hook";
 import { Signin, signin } from "../../../validators/zod-schemas";
 import GetAToast from "../../components/shared/get-a-toast";
 export default function SigninForm() {
+  const user = useSelector((state: any) => state.user.user);
+  console.log(user);
   //states
   const { handleLogin, setSession } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
+  useEffect(() => {
+    if (isLoginSuccessful) {
+      if (user.role.includes("expert")) navigate("/experts");
+      else if (user.role.includes("innovator")) navigate("/innovators");
+      else if (user.role.includes("investor")) navigate("/investors");
+      else navigate("/");
+    }
+  }, [isLoginSuccessful, user]);
   async function submit(data: Signin) {
     console.log(data);
     const { email, password } = data;
@@ -25,9 +37,11 @@ export default function SigninForm() {
       toast.error("Invalid email or password");
     } else if (response.status == 200) {
       setSession(response.data.data.token);
-      // const user = await getUserByEmail({ email });
-      // console.log(user);
-      navigate("/");
+      // if (user.role.includes("expert")) navigate("/expert");
+      setIsLoginSuccessful(true);
+      // navigate("/");
+
+      // window.location.reload();
     }
   }
   const {

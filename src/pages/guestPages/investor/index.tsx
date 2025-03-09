@@ -43,8 +43,9 @@ export default function InvestorPage() {
 
   // Fetch investors using react-query
   const { data, isLoading, error } = useQuery({
-    queryKey: ["innovators"], // Unique query key
+    queryKey: ["investors"], // Unique query key
     queryFn: fetchInvestors, // Your API call function
+    staleTime: 5 * 60 * 1000,
   });
   const {
     data: filteredUsers,
@@ -54,6 +55,9 @@ export default function InvestorPage() {
     queryKey: ["filteredInnovators", selectedCountry, selectedExperience], // Unique query key
     queryFn: () => fetchFilteredInvestors(selectedCountry, selectedExperience), // Your API call function
   });
+  if (data) {
+    console.log(data);
+  }
   return (
     <>
       <Card styles="flex flex-col">
@@ -89,7 +93,7 @@ export default function InvestorPage() {
             ) : error ? (
               <div>
                 <h1 className="text-red-500">
-                  {error instanceof Error ? error.message : "An error occurred"}
+                  {error instanceof Error ? "Inerval Server Error" : ""}
                 </h1>
               </div> // Handle error state
             ) : data.length > 0 ? (

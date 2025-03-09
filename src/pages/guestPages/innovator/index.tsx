@@ -41,6 +41,7 @@ export default function InnovatorPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["innovators"], // Unique query key
     queryFn: fetchInnovators, // Your API call function
+    staleTime: 5 * 60 * 1000,
   });
   const {
     data: filteredUsers,

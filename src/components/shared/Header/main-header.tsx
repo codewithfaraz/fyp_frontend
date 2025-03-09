@@ -5,7 +5,7 @@ import { Button, Dropdown, Avatar } from "rizzui";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { userActions } from "../../../../store/store";
-import Footer from "../footer";
+// import Footer from "../footer";
 import { useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 export default function MainHeader() {
@@ -17,6 +17,7 @@ export default function MainHeader() {
     { to: "/innovators", label: "Innovators" },
     { to: "/investors", label: "Investors" },
     { to: "/experts", label: "Experts" },
+    { to: "/messages", label: "Messages" },
     { to: "/privacy-policy", label: "Privacy Policy" },
   ];
 
@@ -39,7 +40,9 @@ export default function MainHeader() {
                   "text-green-900 border-b border-green-900"
                 }`}
               >
-                {link.label}
+                {link.label != "Messages"
+                  ? link.label
+                  : user?.username && link.label}
               </Link>
             ))}
             {!user?.username ? (

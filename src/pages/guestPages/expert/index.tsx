@@ -35,8 +35,9 @@ export default function ExpertPage() {
   }
   // Fetch innovators using react-query
   const { data, isLoading, error } = useQuery({
-    queryKey: ["innovators"], // Unique query key
+    queryKey: ["experts"], // Unique query key
     queryFn: fetchExperts, // Your API call function
+    staleTime: 5 * 60 * 1000,
   });
   const {
     data: filteredUsers,
