@@ -18,7 +18,7 @@ const skillsOptions = [
 ];
 const experienceLevelOptions = [
   { label: "1 to 2 years", value: "1_2_years" },
-  { label: "3 to 5 years", value: "2_5_years" },
+  { label: "3 to 5 years", value: "3_5_years" },
   { label: "5+ years", value: "5+_years" },
 ];
 export default function InnovatorFinishForm({

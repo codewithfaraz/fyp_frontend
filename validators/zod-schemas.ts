@@ -6,6 +6,8 @@ export const signin = z.object({
   password: z.string().min(8, { message: errorMessages.passwordMessage }),
   // rememverMe: z.boolean().optional(),
 });
+// Allowed email domains
+const allowedEmailDomains = ["gmail.com", "yahoo.com", "outlook.com"];
 //schema for signup
 export const signup = z.object({
   email: z
@@ -24,7 +26,26 @@ export const signup = z.object({
   message: "Passwords don't match",
   path: ["confirmPassword"],
 });
-
+export const signup = z
+  .object({
+    email: z
+      .string()
+      .email({ message: errorMessages.emailMessage })
+      .refine((email) => {
+        const domain = email.split("@")[1]; // Extract the domain part of the email
+        return allowedEmailDomains.includes(domain); // Check if the domain is allowed
+      }, "Only Gmail, Yahoo, and Outlook emails are allowed"),
+    username: z.string().nonempty({ message: errorMessages.usernameMessage }),
+    password: z.string().min(8, { message: errorMessages.passwordMessage }),
+    confirmPassword: z
+      .string()
+      .min(8, { message: errorMessages.confirmPasswordMessage }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: errorMessages.confirmPasswordMessage,
+    path: ["confirmPassword"],
+  });
+>>>>>>> origin/reactSetup
 //schema for user profile
 export const userProfile = z.object({
   firstName: z.string().nonempty({ message: errorMessages.firstNameMessage }),
@@ -32,7 +53,22 @@ export const userProfile = z.object({
   lastName: z.string().optional(),
   dateOfBirth: z
     .string()
-    .nonempty({ message: errorMessages.dateOfBirthMessage }),
+    .nonempty({ message: errorMessages.dateOfBirthMessage })
+    .refine((date) => {
+      const dob = new Date(date); // Parse the date string
+      const today = new Date(); // Get today's date
+      return dob <= today; // Ensure the date is not in the future
+    }, "Date of birth cannot be in the future")
+    .refine((date) => {
+      const dob = new Date(date); // Parse the date string
+      const today = new Date(); // Get today's date
+      const minAgeDate = new Date(
+        today.getFullYear() - 18,
+        today.getMonth(),
+        today.getDate()
+      ); // Calculate the date 18 years ago
+      return dob <= minAgeDate; // Ensure the user is at least 18 years old
+    }, "You must be at least 18 years old"),
   // gender: z.enum(["Male", "Female"], { message: errorMessages.genderMessage }),
 });
 //schema for contact information

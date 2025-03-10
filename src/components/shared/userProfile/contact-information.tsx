@@ -9,6 +9,10 @@ import "react-phone-input-2/lib/style.css";
 import Select from "react-select";
 import { ContactInformation, contactInformation } from "../../../../validators/zod-schemas";
 
+// Cast components to valid JSX types
+const PhoneInputComponent = PhoneInput as unknown as React.FC<any>;
+const SelectComponent = Select as unknown as React.FC<any>;
+
 // Country List
 const countryOptions = [
   { label: "United States", value: "United States" },
@@ -27,7 +31,6 @@ export default function ContactInformationPage({
 }) {
   const {
     control,
-    register,
     handleSubmit,
     formState: { errors },
     setValue,
@@ -36,12 +39,10 @@ export default function ContactInformationPage({
     resolver: zodResolver(contactInformation),
   });
 
-  // Get selected country
   const selectedCountry = watch("country");
   const [cities, setCities] = useState<{ label: string; value: string }[]>([]);
   const [loadingCities, setLoadingCities] = useState(false);
 
-  // Fetch cities when country changes
   useEffect(() => {
     if (selectedCountry) {
       setLoadingCities(true);
@@ -77,17 +78,19 @@ export default function ContactInformationPage({
           name="phoneNo"
           control={control}
           render={({ field }) => (
-            <PhoneInput
+            <PhoneInputComponent
               country={"us"}
               enableSearch
               inputClass="w-full p-2 border border-gray-300 rounded"
               containerClass="w-full"
-              onChange={(phone) => setValue("phoneNo", phone)}
-              value={field.value}
+              onChange={(phone) => field.onChange(phone)}
+              value={field.value || ""}
             />
           )}
         />
-        {errors.phoneNo && <p className="text-red-500 text-sm">{errors.phoneNo.message}</p>}
+        {errors.phoneNo && (
+          <p className="text-red-500 text-sm">{errors.phoneNo.message}</p>
+        )}
       </div>
 
       {/* Country Dropdown */}
@@ -97,43 +100,51 @@ export default function ContactInformationPage({
           name="country"
           control={control}
           render={({ field }) => (
-            <Select
+            <SelectComponent
               options={countryOptions}
               className="w-full"
               placeholder="Select your country"
               value={countryOptions.find((c) => c.label === field.value)}
               onChange={(selectedOption) => {
-                setValue("country", selectedOption?.label || "");
-                setValue("city", ""); // Reset city on country change
+                field.onChange(selectedOption?.label || "");
+                setValue("city", "");
               }}
             />
           )}
         />
-        {errors.country && <p className="text-red-500 text-sm">{errors.country.message}</p>}
+        {errors.country && (
+          <p className="text-red-500 text-sm">{errors.country.message}</p>
+        )}
       </div>
 
-      {/* City Dropdown (Fetched from API) */}
+      {/* City Dropdown */}
       <div>
-        <label className="block text-sm font-medium"></label>
+        <label className="block text-sm font-medium">City</label>
         {selectedCountry ? (
           <Controller
             name="city"
             control={control}
             render={({ field }) => (
-              <Select
+              <SelectComponent
                 options={cities}
                 isLoading={loadingCities}
                 className="w-full"
-                placeholder={loadingCities ? "Loading cities..." : "Select your city"}
+                placeholder={
+                  loadingCities ? "Loading cities..." : "Select your city"
+                }
                 value={cities.find((c) => c.label === field.value)}
-                onChange={(selectedOption) => setValue("city", selectedOption?.label || "")}
+                onChange={(selectedOption) =>
+                  field.onChange(selectedOption?.label || "")
+                }
               />
             )}
           />
         ) : (
           <Input label="City" placeholder="Select a country first" disabled />
         )}
-        {errors.city && <p className="text-red-500 text-sm">{errors.city.message}</p>}
+        {errors.city && (
+          <p className="text-red-500 text-sm">{errors.city.message}</p>
+        )}
       </div>
 
       {/* Buttons */}

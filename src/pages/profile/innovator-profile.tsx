@@ -47,7 +47,7 @@ export default function InnovatorProfile({ user }: { user: any }) {
             <UserAcount data={innovatorData} userType="innovator" />
           </Tab.Panel>
           <Tab.Panel>
-            <IdeaTable data={innovatorData} />
+            <IdeaTable username={innovatorData.username} />
           </Tab.Panel>
           <Tab.Panel>Account Settings</Tab.Panel>
         </Tab.Panels>

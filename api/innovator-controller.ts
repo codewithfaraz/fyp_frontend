@@ -36,6 +36,38 @@ class InnovatorController {
         });
     });
   }
+  static getFeaturedInnovaors(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      apiClient
+        .get("/innovator/new")
+        .then((res) => {
+          if (res.status === 200) {
+            resolve(res);
+          } else {
+            reject(res); // Handles non-200 statuses
+          }
+        })
+        .catch(({ response }) => {
+          reject(response); // Handles network or unexpected errors
+        });
+    });
+  }
+  static getAllInnovators(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      apiClient
+        .get("/innovator/all")
+        .then((res) => {
+          if (res.status === 200) {
+            resolve(res);
+          } else {
+            reject(res); // Handles non-200 statuses
+          }
+        })
+        .catch(({ response }) => {
+          reject(response); // Handles network or unexpected errors
+        });
+    });
+  }
   static updateInnovator(data: any): Promise<any> {
     return new Promise((resolve, reject) => {
       apiClient
