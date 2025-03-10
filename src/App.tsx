@@ -16,6 +16,11 @@ import IsInvestor from "./routeProtections/isInvestor";
 // import ExpertPage from "./pages/guestPages/expert";
 import ExpertPage from "./components/pagesToDisplayAfterRegisteration/Expert";
 import InnovatorPage from "./components/pagesToDisplayAfterRegisteration/Innovator";
+import InnovatorProfile from "./pages/profile/innovator-profile";
+// import InnovatorPage from "./pages/guestPages/innovator";
+// import ExpertPage from "./pages/guestPages/expert";
+import ViewIdea from "./components/table/viewIdea";
+// import Innovator from "./pages/innovator";
 import StartAProject from "./pages/guestPages/innovator/start-a-project";
 import Home from ".";
 import Profile from "./pages/profile/profile";
@@ -46,6 +51,10 @@ function App() {
           <Route
             path="/profile/:usertype/:username"
             element={<ProfilePage />}
+          />
+          <Route
+            path="/innovator/innovator-profile"
+            element={<InnovatorProfile user={undefined} />}
           />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="profile" element={<Profile />} />
@@ -82,6 +91,7 @@ function App() {
           <Route path="innovator" element={<InnovatorRegiseration />} />
           <Route path="investor" element={<InvestorRegiseration />} />
         </Route>
+        <Route path="/view-idea" element={<ViewIdea />} />
       </Routes>
     </Router>
   );

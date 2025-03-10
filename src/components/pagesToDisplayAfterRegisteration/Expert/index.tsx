@@ -51,7 +51,6 @@ const myReviews = [
 ];
 export default function ExpertPage() {
   const user = useSelector((state: any) => state.user.user);
-
   const { data, isLoading, error } = useQuery({
     queryKey: ["refiningIdeas"], // Unique query key
     queryFn: fetchIdeas, // Your API call function
@@ -154,7 +153,13 @@ export default function ExpertPage() {
                 })
               : data.length > 0
               ? data.map((idea) => {
-                  return <IdeaCardForExperts idea={idea} />;
+                  return (
+                    <IdeaCardForExperts
+                      idea={idea}
+                      username={user.username}
+                      userType={user.role[0]}
+                    />
+                  );
                 })
               : "No ideas found"}
           </div>
