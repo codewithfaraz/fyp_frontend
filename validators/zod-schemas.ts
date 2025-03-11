@@ -7,9 +7,9 @@ export const signin = z.object({
   // rememverMe: z.boolean().optional(),
 });
 // Allowed email domains
-const allowedEmailDomains = ["gmail.com", "yahoo.com", "outlook.com"];
+const allowedEmailDomains = ["gmail.com", "yahoo.com", "hotmail.com"];
 //schema for signup
-export const signup = z.object({
+export const Signup = z.object({
   email: z
     .string()
     .email("Invalid email address")
@@ -45,7 +45,6 @@ export const signup = z
     message: errorMessages.confirmPasswordMessage,
     path: ["confirmPassword"],
   });
->>>>>>> origin/reactSetup
 //schema for user profile
 export const userProfile = z.object({
   firstName: z.string().nonempty({ message: errorMessages.firstNameMessage }),

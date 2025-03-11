@@ -25,6 +25,8 @@ import StartAProject from "./pages/guestPages/innovator/start-a-project";
 import Home from ".";
 import Profile from "./pages/profile/profile";
 import ChatPage from "./pages/Chat";
+import ForgotPassword from "./pages/forgot-password";
+
 import {
   // RouterProvider,
   BrowserRouter as Router,
@@ -86,6 +88,7 @@ function App() {
         </Route>
         <Route path="/sign-in" element={<SigninForm />} />
         <Route path="/sign-up" element={<SignupForm />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/registeration" element={<Layout />}>
           <Route path="expert" element={<ExpertRegisteration />} />
           <Route path="innovator" element={<InnovatorRegiseration />} />
