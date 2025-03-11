@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { Stepper } from "rizzui";
+import { useNavigate } from "react-router-dom";
 import HeadingPrimary from "../../../../components/layout/ui/heading-primary";
 import UnderlineShape from "../../../../components/shape/underline";
 import StartStep from "./start-step";
 import Card from "../../../../components/layout/ui/card";
 import FinishStep from "./finish-step";
+import GetAToast from "../../../../components/shared/get-a-toast";
+import toast from "react-hot-toast";
 import ProblemStep from "./problem-step";
 import { useSelector } from "react-redux";
 import { useIdea } from "../../../../../hooks/use-idea";
 export default function StartAProject() {
+  const navigate = useNavigate();
   const username = useSelector((state: any) => state.user?.user.username);
   const { addIdea } = useIdea();
   const [currentStep, setCurrentStep] = useState(0);
@@ -22,12 +26,17 @@ export default function StartAProject() {
       setIsSubmitting(true);
       const response = await addIdea({ ...newData, username });
       setIsSubmitting(false);
+      if (response.status === 409) {
+        toast.error("Idea already exists");
+        navigate("/innovators");
+      }
       console.log(response);
     }
     setCurrentStep((prev) => prev + 1);
   }
   return (
     <Card styles="">
+      <GetAToast />
       <HeadingPrimary styles="text-center">
         Start{" "}
         <span className="relative text-green-900">

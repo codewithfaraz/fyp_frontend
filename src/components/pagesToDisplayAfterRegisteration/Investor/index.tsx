@@ -1,34 +1,14 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-// Sample data - replace with API calls
-const refinedIdeas = [
-  {
-    id: "1",
-    title: "AI-Powered Healthcare Assistant",
-    shortDescription:
-      "A revolutionary healthcare assistant that uses AI to provide personalized medical guidance and support.",
-    category: "Healthcare",
-    innovatorName: "John Doe",
-    fundsRequired: 50000,
-    expertReviews: 3,
-    status: "refined" as const,
-    roi: "2-3 years",
-    marketSize: "$5.4B by 2025",
-  },
-  {
-    id: "2",
-    title: "Smart Learning Platform",
-    shortDescription:
-      "Adaptive learning system that personalizes education using AI and machine learning.",
-    category: "Education",
-    innovatorName: "Jane Smith",
-    fundsRequired: 75000,
-    expertReviews: 4,
-    status: "refined" as const,
-    roi: "1-2 years",
-    marketSize: "$3.2B by 2024",
-  },
-];
+import { apiClient } from "../../../../api/api.config";
+import { useQuery } from "@tanstack/react-query";
+import IdeaCardForInvestor from "../../Cards/IdeaCardForInvestor";
+import IdeaCardSkeleton from "../../shared/skeleton/IdeaCardSkeleton";
+async function fetchIdeas() {
+  const response = await apiClient.get(`/innovator/get-refined-ideas`);
+  return response.data.data.ideas;
+}
+
 const myInvestments = [
   {
     id: "1",
@@ -51,6 +31,13 @@ const myInvestments = [
 ];
 export default function InvestorPage() {
   const user = useSelector((state: any) => state.user.user);
+
+  //fetching ideas
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["refinedIdeas"], // Unique query key
+    queryFn: fetchIdeas, // Your API call function
+    staleTime: 5 * 60 * 1000,
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -133,67 +120,23 @@ export default function InvestorPage() {
             <h2 className="text-xl font-bold text-gray-900">
               Featured Opportunities
             </h2>
-            <Link
-              to="/browse-investments"
-              className="text-purple-600 hover:text-purple-800 text-sm font-medium"
-            >
-              View All Opportunities →
-            </Link>
           </div>
           <div className="space-y-4">
-            {refinedIdeas.map((idea) => (
-              <div
-                key={idea.id}
-                className="border rounded-lg p-4 hover:border-purple-500 transition-colors"
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
-                      {idea.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {idea.shortDescription}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                      Expert Refined
-                    </span>
-                    <p className="text-sm font-medium text-gray-900 mt-2">
-                      ${idea.fundsRequired.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-gray-500">
-                      Category: {idea.category}
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-gray-500">ROI: {idea.roi}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-500">
-                      Market Size: {idea.marketSize}
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-gray-500">
-                      {idea.expertReviews} Expert Reviews
-                    </span>
-                  </div>
-                </div>
-                <div className="mt-4 flex justify-end">
-                  <Link
-                    to={`/investment-opportunity/${idea.id}`}
-                    className="text-purple-600 hover:text-purple-800 font-medium"
-                  >
-                    View Details →
-                  </Link>
-                </div>
-              </div>
-            ))}
+            {isLoading
+              ? [1, 2, 3].map((i) => {
+                  return <IdeaCardSkeleton key={i} />;
+                })
+              : data.length > 0
+              ? data.map((idea) => {
+                  return (
+                    <IdeaCardForInvestor
+                      idea={idea}
+                      username={user.username}
+                      userType={user.role[0]}
+                    />
+                  );
+                })
+              : "No ideas found"}
           </div>
         </div>
 
@@ -235,12 +178,6 @@ export default function InvestorPage() {
                       Since: {investment.investmentDate}
                     </span>
                   </div>
-                  <Link
-                    to={`/investment/${investment.id}`}
-                    className="text-green-900 hover:text-green-700 font-medium"
-                  >
-                    View Details →
-                  </Link>
                 </div>
               </div>
             ))}
