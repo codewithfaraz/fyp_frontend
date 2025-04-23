@@ -10,12 +10,16 @@ interface ChatHeaderProps {
   user: User;
   isMobile?: boolean;
   onBackClick?: () => void;
+  username: string;
+  hostUsername: string;
 }
 
 export default function ChatHeader({
   user,
   isMobile = false,
   onBackClick,
+  username,
+  hostUsername,
 }: ChatHeaderProps) {
   console.log(user);
   return (
@@ -27,10 +31,20 @@ export default function ChatHeader({
           </button>
         )}
         <div className="w-10 h-10 rounded-full bg-green-900 text-white flex items-center justify-center font-semibold">
-          {user.lastMessage.senderUserName.charAt(0)}
+          {user.lastMessage.senderUserName === hostUsername ? (
+            <div>{user.lastMessage.receiverUserName.charAt(0)}</div>
+          ) : (
+            <div>{user.lastMessage.senderUserName.charAt(0)}</div>
+          )}
+          {/* {user.lastMessage.senderUserName.charAt(0)} */}
         </div>
         <h2 className="ml-3 text-xl font-semibold">
-          {user.lastMessage.senderUserName}
+          {user.lastMessage.senderUserName === hostUsername ? (
+            <div>{user.lastMessage.receiverUserName}</div>
+          ) : (
+            <div>{user.lastMessage.senderUserName}</div>
+          )}
+          {/* {user.lastMessage.senderUserName} */}
         </h2>
       </div>
     </div>

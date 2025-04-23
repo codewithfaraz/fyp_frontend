@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Stepper } from "rizzui";
+import { Link } from "react-router-dom";
+import { Stepper, Modal } from "rizzui";
 import { useNavigate } from "react-router-dom";
 import HeadingPrimary from "../../../../components/layout/ui/heading-primary";
 import UnderlineShape from "../../../../components/shape/underline";
@@ -13,6 +14,7 @@ import { useSelector } from "react-redux";
 import { useIdea } from "../../../../../hooks/use-idea";
 export default function StartAProject() {
   const navigate = useNavigate();
+  const [isErrorModal, setIsErrorModal] = useState(false);
   const username = useSelector((state: any) => state.user?.user.username);
   const { addIdea } = useIdea();
   const [currentStep, setCurrentStep] = useState(0);
@@ -25,9 +27,12 @@ export default function StartAProject() {
       console.log("now submit data");
       setIsSubmitting(true);
       const response = await addIdea({ ...newData, username });
+      console.log(response);
       setIsSubmitting(false);
       if (response.status === 409) {
+        setIsErrorModal(true);
         toast.error("Idea already exists");
+      } else {
         navigate("/innovators");
       }
       console.log(response);
@@ -37,6 +42,12 @@ export default function StartAProject() {
   return (
     <Card styles="">
       <GetAToast />
+      <Modal isOpen={isErrorModal} onClose={() => setIsErrorModal(false)}>
+        <div className="p-6">
+          <h1>Idea Already Exists</h1>
+          <Link to="/innovators">Go Back</Link>
+        </div>
+      </Modal>
       <HeadingPrimary styles="text-center">
         Start{" "}
         <span className="relative text-green-900">

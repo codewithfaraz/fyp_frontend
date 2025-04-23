@@ -35,7 +35,8 @@ export default function IdeaCardForExpertWithPermission({
           </Link>
         </div>
         <Link
-          to={`/review-idea/${idea.id}`}
+          to={`/review-idea`}
+          state={{ idea }}
           className="text-blue-600 hover:text-blue-800 font-medium"
         >
           Start Review →

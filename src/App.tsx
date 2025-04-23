@@ -5,8 +5,11 @@ import InnovatorRegiseration from "./pages/registeration/innovator";
 import InvestorRegiseration from "./pages/registeration/investor";
 import Layout from "./pages/registeration/layout";
 import PrivacyPolicy from "./pages/privacy-policy";
+import Footer from "./components/shared/footer";
 import { useAuth } from "../hooks/use-auth";
+import ReviewIdea from "./components/reviewIdea/reviewIdea";
 import MainHeader from "./components/shared/Header/main-header";
+
 // import InvestorPage from "./pages/guestPages/investor";
 import InvestorPage from "./components/pagesToDisplayAfterRegisteration/Investor";
 import ProfilePage from "./pages/profilePage";
@@ -48,6 +51,7 @@ function App() {
               </IsInnovator>
             }
           />
+
           <Route
             path="/profile/:usertype/:username"
             element={<ProfilePage />}
@@ -92,6 +96,7 @@ function App() {
           <Route path="investor" element={<InvestorRegiseration />} />
         </Route>
         <Route path="/view-idea" element={<ViewIdea />} />
+        <Route path="/review-idea" element={<ReviewIdea />} />
       </Routes>
     </Router>
   );
