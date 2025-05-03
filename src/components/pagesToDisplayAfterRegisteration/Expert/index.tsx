@@ -20,28 +20,7 @@ const getAcceptedRequests = async function (username: string) {
   console.log(response);
   return response;
 };
-const ideasToReview = [
-  {
-    id: "1",
-    title: "AI-Powered Healthcare Assistant",
-    shortDescription:
-      "A revolutionary healthcare assistant that uses AI to provide personalized medical guidance and support.",
-    category: "Healthcare",
-    innovatorName: "John Doe",
-    dateSubmitted: "2024-03-15",
-    status: "pending" as const,
-  },
-  {
-    id: "2",
-    title: "Smart Learning Platform",
-    shortDescription:
-      "Adaptive learning system that personalizes education using AI and machine learning.",
-    category: "Education",
-    innovatorName: "Jane Smith",
-    dateSubmitted: "2024-03-10",
-    status: "in_progress" as const,
-  },
-];
+
 const myReviews = [
   {
     id: "1",
