@@ -4,33 +4,23 @@ import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../../../../api/api.config";
 import IdeaCardForExperts from "../../Cards/IdeaCardForExperts";
 import IdeaCardSkeleton from "../../shared/skeleton/IdeaCardSkeleton";
+import IdeaCardForExpertWithPermission from "../../Cards/IdeaCardForExpertWithPermissionToSeeIdea";
 // Sample data - replace with API calls
 async function fetchIdeas() {
   const response = await apiClient.get(`/innovator/get-refining-ideas`);
   return response.data.data.ideas;
 }
-const ideasToReview = [
-  {
-    id: "1",
-    title: "AI-Powered Healthcare Assistant",
-    shortDescription:
-      "A revolutionary healthcare assistant that uses AI to provide personalized medical guidance and support.",
-    category: "Healthcare",
-    innovatorName: "John Doe",
-    dateSubmitted: "2024-03-15",
-    status: "pending" as const,
-  },
-  {
-    id: "2",
-    title: "Smart Learning Platform",
-    shortDescription:
-      "Adaptive learning system that personalizes education using AI and machine learning.",
-    category: "Education",
-    innovatorName: "Jane Smith",
-    dateSubmitted: "2024-03-10",
-    status: "in_progress" as const,
-  },
-];
+const getAcceptedRequests = async function (username: string) {
+  const response = await apiClient.get(
+    "/innovator/get-accepted-request-ideas",
+    {
+      params: { username, userType: "expert" },
+    }
+  );
+  console.log(response);
+  return response;
+};
+
 const myReviews = [
   {
     id: "1",
@@ -56,8 +46,17 @@ export default function ExpertPage() {
     queryFn: fetchIdeas, // Your API call function
     staleTime: 5 * 60 * 1000,
   });
-  if (data) {
-    console.log(data);
+  const {
+    data: acceptedRequests,
+    isLoading: acceptedRequestsIsLoading,
+    error: acceptedRequestsError,
+  } = useQuery({
+    queryKey: ["acceptedRequests", user.username],
+    queryFn: () => getAcceptedRequests(user.username),
+  });
+  //these are the ideas that we have to display under refinedment ideas
+  if (acceptedRequests) {
+    console.log(acceptedRequests);
   }
   return (
     <div className="min-h-screen bg-gray-50">
@@ -139,12 +138,6 @@ export default function ExpertPage() {
             <h2 className="text-xl font-bold text-gray-900">
               Latest Ideas to work on
             </h2>
-            <Link
-              to="/browse-ideas"
-              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-            >
-              View All Ideas →
-            </Link>
           </div>
           <div className="space-y-4">
             {isLoading
@@ -170,58 +163,15 @@ export default function ExpertPage() {
             <h2 className="text-xl font-bold text-gray-900">
               Ideas Under Refinement
             </h2>
-            <Link
-              to="/browse-ideas"
-              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-            >
-              View All Ideas →
-            </Link>
           </div>
           <div className="space-y-4">
-            {ideasToReview.map((idea) => (
-              <div
-                key={idea.id}
-                className="border rounded-lg p-4 hover:border-blue-500 transition-colors"
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
-                      {idea.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {idea.shortDescription}
-                    </p>
-                  </div>
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      idea.status === "in_progress"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-blue-100 text-blue-800"
-                    }`}
-                  >
-                    {idea.status === "in_progress"
-                      ? "In Progress"
-                      : "Pending Review"}
-                  </span>
-                </div>
-                <div className="mt-4 flex items-center justify-between text-sm">
-                  <div className="flex items-center space-x-4">
-                    <span className="text-gray-500">
-                      Category: {idea.category}
-                    </span>
-                    <span className="text-gray-500">
-                      By: {idea.innovatorName}
-                    </span>
-                  </div>
-                  <Link
-                    to={`/review-idea/${idea.id}`}
-                    className="text-blue-600 hover:text-blue-800 font-medium"
-                  >
-                    Start Review →
-                  </Link>
-                </div>
-              </div>
-            ))}
+            {acceptedRequestsIsLoading
+              ? [1, 2, 3].map((i) => {
+                  return <IdeaCardSkeleton key={i} />;
+                })
+              : acceptedRequests?.data.data.ideas.map((idea) => {
+                  return <IdeaCardForExpertWithPermission idea={idea} />;
+                })}
           </div>
         </div>
         {/* Recent Reviews */}

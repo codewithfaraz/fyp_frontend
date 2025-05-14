@@ -5,6 +5,13 @@ import { useNavigate } from "react-router-dom";
 import UserProfilePageSkeleton from "../../components/shared/skeleton/UserProfilePageSkeleton";
 // import { User } from "../types/user";
 //function to fetch user data from the server
+const fetchReviews = async function (username: string) {
+  const response = await apiClient.get("/reviews/get-reviews", {
+    params: { username },
+  });
+  console.log(response.data.data.reviews);
+  return response.data.data.reviews;
+};
 async function fetchUser(
   username: string | undefined,
   userType: string | undefined
@@ -30,7 +37,13 @@ async function fetchUser(
 export default function ProfilePage() {
   const navigate = useNavigate();
   const { username, usertype } = useParams();
-  console.log(usertype);
+  const { data: reviews, isLoading: reviewsIsLoading } = useQuery({
+    queryKey: ["reviews", username],
+    queryFn: () => fetchReviews(username),
+  });
+  if (reviews) {
+    console.log(reviews);
+  }
   const { data, isLoading, error } = useQuery({
     queryKey: ["user", username, usertype],
     queryFn: () => fetchUser(username, usertype),
@@ -187,7 +200,36 @@ export default function ProfilePage() {
                   </div>
                 </section>
               )}
+              {usertype === "expert" && (
+                <section className="bg-white rounded-lg shadow p-6">
+                  <h2 className="text-lg font-bold text-gray-900 mb-4">
+                    Reviews
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {!reviewsIsLoading &&
+                      reviews.map((review) => (
+                        <div className="bg-white rounded-lg shadow-md p-6 w-full">
+                          {/* Review Text */}
+                          <p className="text-gray-700 text-base font-medium">
+                            {review.reviewText}
+                          </p>
 
+                          {/* Reviewer Name and Date */}
+                          <div className="flex flex-col mt-2 text-sm text-gray-500">
+                            <span>{review.givenBy}</span>
+                            <span>
+                              {
+                                new Date(review.date)
+                                  .toISOString()
+                                  .split("T")[0]
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </section>
+              )}
               {/* Skills */}
               {data.skills && data.skills.length > 0 && (
                 <section className="bg-white rounded-lg shadow p-6">

@@ -149,6 +149,7 @@ const mockMessages = {
 export default function ChatPage() {
   const { username } = useParams();
   const user = useSelector((state: any) => state.user.user);
+  console.log(username);
   const {
     data: fetchedConversations = [],
     isLoading,
@@ -215,7 +216,7 @@ export default function ChatPage() {
         {selectedUser && (
           <UserChat
             username={username}
-            hostUsername={username}
+            hostUsername={user.username}
             user={selectedUser}
             messages={messages[selectedUser.id as keyof typeof messages] || []}
             onSendMessage={handleSendMessage}
@@ -225,7 +226,9 @@ export default function ChatPage() {
         {/* Mobile chat view */}
         {selectedUser && (
           <UserChat
+            username={username}
             user={selectedUser}
+            hostUsername={user.username}
             messages={messages[selectedUser.id as keyof typeof messages] || []}
             onSendMessage={handleSendMessage}
             onBackClick={() => setSelectedUser(mockUsers[0])}

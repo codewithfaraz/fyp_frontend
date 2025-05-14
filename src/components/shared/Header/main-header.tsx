@@ -22,7 +22,6 @@ export default function MainHeader() {
     { to: "/messages", label: "Messages" },
     { to: "/privacy-policy", label: "Privacy Policy" },
   ];
-
   return (
     <>
       <div className="md:max-w-full border-b relative">

@@ -161,7 +161,6 @@ export const categories = [
 export const mainCategories = [
   { label: "Technology", value: "technology" },
   { label: "Healthcare", value: "healthcare" },
-
   { label: "Finance", value: "finance" },
   { label: "Environment", value: "environment" },
   { label: "Business", value: "business" },

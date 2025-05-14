@@ -1,12 +1,25 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Modal } from "rizzui";
 import IdeaCard from "../../Cards/IdeaCard";
 import { apiClient } from "../../../../api/api.config";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import UserProfileCardSkeleton from "../../shared/skeleton/UserProfileCardSkeleton";
 import { UserCard } from "../../shared/Users/userProfileCard";
 import IdeaCardSkeleton from "../../shared/skeleton/IdeaCardSkeleton";
+import toast from "react-hot-toast";
+import GetAToast from "../../shared/get-a-toast";
 //fetch new experts
+async function addReview(givenBy: string, givenTo: string, text: string) {
+  const response = await apiClient.post("/reviews/add-review", {
+    reviewText: text,
+    givenTo,
+    givenBy,
+  });
+
+  return response.status;
+}
 async function fetchExperts() {
   const response = await apiClient.get("/expert/new");
   return response.data.data.experts; // Adjust based on your API response structure
@@ -17,9 +30,41 @@ async function fetchIdeas(username: string) {
   });
   return response.data.data.ideas;
 }
+async function fetchExpertsWorkingOnIdeas(username: string) {
+  const response = await apiClient.get("/innovator/get-refiningExperts", {
+    params: { username: username },
+  });
+  // console.log(response.data);
+  return response.data.data.experts;
+}
+
 export default function InnovatorPage() {
+  const sendRequestMutation = useMutation({
+    mutationFn: ({
+      givenBy,
+      givenTo,
+      reviewText,
+    }: {
+      reviewText: string;
+      givenBy: string;
+      givenTo: string;
+    }) => addReview(givenBy, givenTo, reviewText),
+    onSuccess: (res) => {
+      console.log("sendRequestMutationr", res);
+      if (res === 201) {
+        toast.error("U have already give review to this expert");
+      } else if (res === 200) {
+        toast.success("Request sent successfully");
+      }
+    },
+    onError: () => {
+      toast.error("Failed to send request");
+    },
+  });
+  const [isReviewClick, setIsReviewClick] = useState(false);
+  const [reviewText, setReviewText] = useState("");
+  const [reviewGivenTo, setReviewGivenTo] = useState("");
   const user = useSelector((state: any) => state.user.user);
-  console.log(user);
   const { data, isLoading, error } = useQuery({
     queryKey: ["experts"], // Unique query key
     queryFn: fetchExperts, // Your API call function
@@ -34,9 +79,72 @@ export default function InnovatorPage() {
     queryFn: () => fetchIdeas(user.username), // Your API call function
     staleTime: 5 * 60 * 1000,
   });
+  const {
+    data: workingExperts,
+    isLoading: workinExpertsIsLoading,
+    error: workingExpertsError,
+  } = useQuery({
+    queryKey: ["workingExperts", user.username],
+    queryFn: () => fetchExpertsWorkingOnIdeas(user.username), // Your API call function
+    staleTime: 5 * 60 * 1000,
+  });
+
+  if (workingExperts) {
+    console.log(workingExperts);
+  }
+  const handleReviewButtonClick = (username: string) => {
+    setReviewGivenTo(username);
+    setIsReviewClick(true);
+    console.log("Review button clicked");
+  };
+  const submitReview = () => {
+    console.log(reviewText, reviewGivenTo, user.username);
+    sendRequestMutation.mutate({
+      givenBy: user.username,
+      reviewText,
+      givenTo: reviewGivenTo,
+    });
+    setIsReviewClick(false);
+    setReviewText("");
+  };
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Welcome Banner */}
+      <GetAToast />
+      <Modal isOpen={isReviewClick} onClose={() => setIsReviewClick(false)}>
+        <div className="p-6">
+          <div className="mb-4">
+            <label
+              htmlFor="review"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Your Review
+            </label>
+            <textarea
+              id="review"
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="Share your experience..."
+            />
+          </div>
+          <div className="flex justify-end space-x-3">
+            <button
+              onClick={() => setIsReviewClick(false)}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors duration-200"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={submitReview}
+              className="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors duration-200"
+            >
+              Submit Review
+            </button>
+          </div>
+        </div>
+      </Modal>
       <div className="bg-green-900 text-white">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold mb-2">Welcome, @{user.username}</h1>
@@ -134,24 +242,32 @@ export default function InnovatorPage() {
         {/* Recommended Experts */}
         <div className="bg-white rounded-xl shadow-sm p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-6">
-            Recommended Experts
+            Experts Working on Your Ideas
           </h2>
           <div className="flex flex-wrap gap-4">
-            {isLoading ? (
+            {workinExpertsIsLoading ? (
               <div className="flex flex-wrap gap-4">
                 {[1, 2, 3].map((i) => {
                   return <UserProfileCardSkeleton key={i} />;
                 })}
               </div>
-            ) : error ? (
+            ) : workingExpertsError ? (
               <div>
                 <h1 className="text-red-500">
-                  {error instanceof Error ? error.message : "An error occurred"}
+                  {error instanceof Error
+                    ? workingExpertsError.message
+                    : "An error occurred"}
                 </h1>
               </div> // Handle error state
-            ) : data.length > 0 ? (
-              data.map((user: any) => (
-                <UserCard user={user} key={user.id} userType="Expert" />
+            ) : workingExperts.length > 0 ? (
+              workingExperts.map((user: any) => (
+                <UserCard
+                  user={user}
+                  key={user.id}
+                  userType="Expert"
+                  onReviewClick={handleReviewButtonClick}
+                  isReviewButtonVisible={true}
+                />
               ))
             ) : (
               <div>

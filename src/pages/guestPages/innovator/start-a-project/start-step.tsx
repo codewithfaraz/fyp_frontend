@@ -14,7 +14,7 @@ export default function StartStep({ onSubmit }: { onSubmit: any }) {
   const [state, setState] = useState("");
   const [isError, setIsError] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(mainCategories[0]);
-  const MAXLENGTH = 200;
+  // const MAXLENGTH = 200;
   const {
     register,
     handleSubmit,

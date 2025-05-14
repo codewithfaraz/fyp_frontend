@@ -43,11 +43,19 @@ const ChatList: React.FC<ChatListProps> = ({
             <div className="flex justify-between items-start">
               <div className="flex items-center">
                 <div className="w-10 h-10 rounded-full bg-green-900 text-white flex items-center justify-center font-semibold">
-                  {username.charAt(0)}
+                  {user.lastMessage.senderUserName === username ? (
+                    <div>{user.lastMessage.receiverUserName.charAt(0)}</div>
+                  ) : (
+                    <div>{user.lastMessage.senderUserName.charAt(0)}</div>
+                  )}
                 </div>
                 <div className="ml-3">
                   <h3 className="font-medium">
-                    {user.lastMessage.senderUserName}
+                    {user.lastMessage.senderUserName === username ? (
+                      <div>{user.lastMessage.receiverUserName}</div>
+                    ) : (
+                      <div>{user.lastMessage.senderUserName}</div>
+                    )}
                   </h3>
                   <p className="text-sm text-gray-500 truncate max-w-[150px]">
                     {user.lastMessage.messageText}

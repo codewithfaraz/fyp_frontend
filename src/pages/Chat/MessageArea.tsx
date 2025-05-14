@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 interface Message {
   id: number;
   sender: string;
@@ -15,6 +16,7 @@ export default function MessageArea({
   messages,
   isMobile = false,
 }: MessageAreaProps) {
+  const user = useSelector((state: any) => state.user.user);
   return (
     <div
       className={`${isMobile ? "" : "flex-1"} p-4 overflow-y-auto bg-gray-50 ${
@@ -24,19 +26,21 @@ export default function MessageArea({
       <div className="space-y-4">
         {messages?.map((message) => (
           <div
-            key={message.id}
+            key={message._id}
             className={`flex ${
-              message.isSelf ? "justify-end" : "justify-start"
+              user.username === message.senderUserName
+                ? "justify-end"
+                : "justify-start"
             }`}
           >
             <div
               className={`max-w-[${isMobile ? "80%" : "70%"}] p-3 rounded-lg ${
-                message.isSelf
+                user.username === message.senderUserName
                   ? "bg-green-900 text-white rounded-br-none"
                   : "bg-white text-gray-800 rounded-bl-none shadow"
               }`}
             >
-              <p>{message.content}</p>
+              <p>{message.messageText}</p>
               <p
                 className={`text-xs mt-1 ${
                   message.isSelf ? "text-green-100" : "text-gray-500"

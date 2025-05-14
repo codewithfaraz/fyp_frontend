@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { HiOutlineBell } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { apiClient } from "../../../api/api.config";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-
+import toast from "react-hot-toast";
 const fetchRequests = async function (username: string) {
   const response = await apiClient.get("/request/get-requests", {
     params: { username, userType: "innovator" },
@@ -13,20 +13,42 @@ const fetchRequests = async function (username: string) {
   console.log(response);
   return response.data.data.requests;
 };
-
+const acceptRequest = async function (requestId: string) {
+  console.log(requestId);
+  const response = await apiClient.patch("/request/accept-request", {
+    requestId,
+  });
+  return response;
+};
 export default function NotificationsDropDown() {
   const user = useSelector((state: any) => state.user.user);
   const [isModal, setIsModal] = useState(false);
   // Sample empty state - you can replace this with your actual data check
   const notifications = [];
   const isEmpty = notifications.length === 0;
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryFn: () => fetchRequests(user.username),
     queryKey: ["requests", user.username],
   });
   if (data) {
     console.log("sdfjk", data);
   }
+  const sendMutationRequestForIdeaAccept = useMutation({
+    mutationFn: (ideaId: string) => acceptRequest(ideaId),
+    onSuccess: (res) => {
+      console.log("sendRequestMutationr", res);
+      toast.success("Request sent successfully");
+      refetch();
+    },
+    onError: () => {
+      toast.error("Failed to send request");
+    },
+  });
+  const handleIdeaAccept = function (id: string) {
+    console.log(id);
+    sendMutationRequestForIdeaAccept.mutate(id);
+    setIsModal(false);
+  };
   return (
     <Dropdown placement="bottom-end">
       <Dropdown.Trigger>
@@ -81,6 +103,7 @@ export default function NotificationsDropDown() {
                       request={request}
                       isModalOpen={isModal}
                       setIsModalOpen={setIsModal}
+                      handleAccept={handleIdeaAccept}
                     />
                   </div>
                 );
@@ -93,12 +116,11 @@ export default function NotificationsDropDown() {
   );
 }
 
-const DropDown = ({ isModalOpen, setIsModalOpen, request }) => {
+const DropDown = ({ isModalOpen, setIsModalOpen, request, handleAccept }) => {
   return (
     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="p-4">
         <h2 className="font-semibold text-lg">Request Details</h2>
-
         <div className="">
           <div className="flex space-x-3">
             <h1>From</h1>
@@ -106,7 +128,6 @@ const DropDown = ({ isModalOpen, setIsModalOpen, request }) => {
               {request.requesterUserName}
             </Link>
           </div>
-
           <p className="text-sm text-gray-800">{request.requestMessage}</p>
           <p className="text-xs text-gray-500">
             {new Date(request.dateOfRequest).toString().slice(0, 15)}
@@ -121,7 +142,7 @@ const DropDown = ({ isModalOpen, setIsModalOpen, request }) => {
           </button>
           <button
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => handleAccept(request._id)}
           >
             Accept
           </button>
